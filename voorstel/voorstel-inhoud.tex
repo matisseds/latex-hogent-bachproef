@@ -1,84 +1,120 @@
-%---------- Inleiding ---------------------------------------------------------
-
-% TODO: Is dit voorstel gebaseerd op een paper van Research Methods die je
-% vorig jaar hebt ingediend? Heb je daarbij eventueel samengewerkt met een
-% andere student?
-% Zo ja, haal dan de tekst hieronder uit commentaar en pas aan.
-
-%\paragraph{Opmerking}
-
-% Dit voorstel is gebaseerd op het onderzoeksvoorstel dat werd geschreven in het
-% kader van het vak Research Methods dat ik (vorig/dit) academiejaar heb
-% uitgewerkt (met medesturent VOORNAAM NAAM als mede-auteur).
-% 
-
 \section{Inleiding}%
 \label{sec:inleiding}
 
-Waarover zal je bachelorproef gaan? Introduceer het thema en zorg dat volgende zaken zeker duidelijk aanwezig zijn:
+Belgische KMO’s staan voor een dubbele uitdaging: enerzijds werken veel bedrijven nog met Excelbestanden en losse SaaS-tools voor verkoop, voorraadbeheer, boekhouding en facturatie, wat leidt tot dubbele invoer, fouten en beperkte schaalbaarheid. Anderzijds worden ondernemingen vanaf 1 januari 2026 verplicht om B2B-facturen elektronisch en gestructureerd uit te wisselen volgens Europese e-facturatiestandaarden en via netwerken zoals Peppol, waardoor klassieke PDF-facturen via e-mail niet langer volstaan. Vooral kleinere organisaties beschikken vaak niet over de interne expertise om tegelijk processen te stroomlijnen, een ERP in te voeren en aan alle e-invoicingvereisten te voldoen.
 
-\begin{itemize}
-  \item kaderen thema
-  \item de doelgroep
-  \item de probleemstelling en (centrale) onderzoeksvraag
-  \item de onderzoeksdoelstelling
-\end{itemize}
+In dit onderzoek staat één concrete Belgische KMO centraal, een onderneming met ongeveer 1–15 medewerkers, die haar kernprocessen grotendeels in Excel en losse tools beheert en tegen 2026 verplicht wordt om B2B-e-facturatie elektronisch te organiseren. Vanuit deze casus wordt onderzocht hoe een overstap naar het open-source ERP-systeem Odoo kan helpen om doorlooptijd en foutgraad in de kernprocessen te verlagen en tegelijk B2B-e-invoicing-compliance via Peppol te waarborgen. De centrale onderzoeksvraag luidt:
 
-Denk er aan: een typische bachelorproef is \textit{toegepast onderzoek}, wat betekent dat je start vanuit een concrete probleemsituatie in bedrijfscontext, een \textbf{casus}. Het is belangrijk om je onderwerp goed af te bakenen: je gaat voor die \textit{ene specifieke probleemsituatie} op zoek naar een goede oplossing, op basis van de huidige kennis in het vakgebied.
+\begin{quote}
+\emph{Hoe kan een stapsgewijze aanpak voor de migratie naar open-source ERP (Odoo) KMO’s helpen hun doorlooptijd en foutgraad te verlagen en tegelijk B2B-e-invoicing-compliance (Peppol) te waarborgen?}
+\end{quote}
 
-De doelgroep moet ook concreet en duidelijk zijn, dus geen algemene of vaag gedefinieerde groepen zoals \emph{bedrijven}, \emph{developers}, \emph{Vlamingen}, enz. Je richt je in elk geval op it-professionals, een bachelorproef is geen populariserende tekst. Eén specifiek bedrijf (die te maken hebben met een concrete probleemsituatie) is dus beter dan \emph{bedrijven} in het algemeen.
+In het probleemdomein worden onder meer volgende aspecten onderzocht: welke typische processen bij de KMO vandaag vertraging en fouten veroorzaken in Excel en losse tools, wat de baseline is qua doorlooptijd, manuele stappen en foutcorrecties, welke migratierisico’s de KMO ervaart bij ERP-invoering (resources, training, integraties, change) en hoe de e-invoicing- en Peppol-eisen de scope en prioriteiten van het project beïnvloeden. In het oplossingsdomein ligt de focus op de impact van een gefaseerde Odoo-implementatie (bijvoorbeeld Sales, Inventory en Accounting in sprints) op manuele stappen en doorlooptijd, de rol van ingebouwde Odoo-functionaliteit (automatische herinneringen, betalingsmatching, integraties) op foutcorrecties en openstaande posten, en de vraag of een voorgesteld kader Peppol-e-facturatie kan configureren en testen zonder blokkerende fouten.
 
-Formuleer duidelijk de onderzoeksvraag! De begeleiders lezen nog steeds te veel voorstellen waarin we geen onderzoeksvraag terugvinden.
+De doelstelling van deze bachelorproef is het ontwikkelen en evalueren van een praktisch migratiekader dat specifiek toepasbaar is bij Belgische KMO’s die willen overstappen van Excel en losse SaaS-oplossingen naar Odoo, met expliciete ondersteuning voor B2B-e-invoicing via Peppol. Het eindresultaat bestaat uit een adviesrapport en een proof-of-concept in een Odoo-omgeving, met een concreet stappenplan, configuratierichtlijnen, testscenario’s en meetbare KPI’s waarmee de verbeteringen voor de casus-KMO en de toepasbaarheid naar andere KMO’s kunnen worden aangetoond.
 
-Schrijf ook iets over de doelstelling. Wat zie je als het concrete eindresultaat van je onderzoek, naast de uitgeschreven scriptie? Is het een proof-of-concept, een rapport met aanbevelingen, \ldots Met welk eindresultaat kan je je bachelorproef als een succes beschouwen?
-
-%---------- Stand van zaken ---------------------------------------------------
+%-----------------------------------------------------------------
 
 \section{Literatuurstudie}%
 \label{sec:literatuurstudie}
 
-Hier beschrijf je de \emph{state-of-the-art} rondom je gekozen onderzoeksdomein, d.w.z.\ een inleidende, doorlopende tekst over het onderzoeksdomein van je bachelorproef. Je steunt daarbij heel sterk op de professionele \emph{vakliteratuur}, en niet zozeer op populariserende teksten voor een breed publiek. Wat is de huidige stand van zaken in dit domein, en wat zijn nog eventuele open vragen (die misschien de aanleiding waren tot je onderzoeksvraag!)?
+\subsection{ERP-systemen en hun rol in KMO’s}
 
-Je mag de titel van deze sectie ook aanpassen (literatuurstudie, stand van zaken, enz.). Zijn er al gelijkaardige onderzoeken gevoerd? Wat concluderen ze? Wat is het verschil met jouw onderzoek?
+ERP-systemen worden in de literatuur omschreven als geïntegreerde softwarepakketten die kernprocessen zoals financiën, logistiek, verkoop en productie binnen één centrale databank en set van workflows beheren.\autocite{SAP_2023,IBM_2023} Door data en processen te bundelen, kunnen organisaties dubbele invoer vermijden, rapportering automatiseren en sneller inspelen op veranderingen. Voor KMO’s wordt benadrukt dat ERP niet enkel een technisch project is, maar ook een ingreep in werkprocessen en organisatiecultuur, met impact op efficiëntie, transparantie en besluitvorming.\autocite{Mestica_2024}
 
-Verwijs bij elke introductie van een term of bewering over het domein naar de vakliteratuur, bijvoorbeeld~\autocite{Hykes2013}! Denk zeker goed na welke werken je refereert en waarom.
+Onderzoek naar ERP-implementaties in kleine en middelgrote ondernemingen toont dat geïntegreerde systemen duidelijke voordelen bieden – kortere doorlooptijden, minder fouten, betere voorraadbeheersing en betere rapportering – maar dat projecten vaak onder druk staan door beperkte middelen, gebrek aan expertise en onderschatting van change management.\autocite{Mestica_2024,SAP_2023,Gartner_2023} Veel bronnen benadrukken dat een duidelijke scope, gefaseerde uitrol, actieve betrokkenheid van gebruikers en aandacht voor datakwaliteit cruciaal zijn om ERP-implementaties in KMO’s succesvol te maken.
 
-Draag zorg voor correcte literatuurverwijzingen! Een bronvermelding hoort thuis \emph{binnen} de zin waar je je op die bron baseert, dus niet er buiten! Maak meteen een verwijzing als je gebruik maakt van een bron. Doe dit dus \emph{niet} aan het einde van een lange paragraaf. Baseer nooit teveel aansluitende tekst op eenzelfde bron.
+\subsection{Odoo als open-source ERP-oplossing}
 
-Als je informatie over bronnen verzamelt in JabRef, zorg er dan voor dat alle nodige info aanwezig is om de bron terug te vinden (zoals uitvoerig besproken in de lessen Research Methods).
+Odoo wordt in professionele documentatie en praktijkcases beschreven als een modulair, open-source ERP-platform met modules voor CRM, verkoop, voorraad, boekhouding, facturatie en meer.\autocite{SAP_2023} Het systeem is populair bij KMO’s vanwege de combinatie van een gebruiksvriendelijke interface, flexibele licentiemodellen en de mogelijkheid om met een beperkte set modules te starten en later uit te breiden. Het open-sourcekarakter en het community-ecosysteem verlagen de instapdrempel en laten toe om functionaliteit uit te breiden waar nodig.
 
-% Voor literatuurverwijzingen zijn er twee belangrijke commando's:
-% \autocite{KEY} => (Auteur, jaartal) Gebruik dit als de naam van de auteur
-%   geen onderdeel is van de zin.
-% \textcite{KEY} => Auteur (jaartal)  Gebruik dit als de auteursnaam wel een
-%   functie heeft in de zin (bv. ``Uit onderzoek door Doll & Hill (1954) bleek
-%   ...'')
+Partners en consultants wijzen er tegelijk op dat succesvolle Odoo-projecten afhankelijk zijn van een correcte procesanalyse, een realistische fasering en een goede voorbereiding van stamdata en gebruikers.\autocite{Mestica_2024,EezeeIT_nodate} Een “big bang”-implementatie waarbij in één keer veel modules geactiveerd worden, wordt voor KMO’s vaak afgeraden; een gefaseerde aanpak per proces of module verhoogt de slaagkans, omdat gebruikers stap voor stap kunnen wennen en problemen sneller gedetecteerd en bijgestuurd worden.
 
-Je mag deze sectie nog verder onderverdelen in subsecties als dit de structuur van de tekst kan verduidelijken.
+\subsection{E-invoicing, Peppol en Belgische context}
 
-%---------- Methodologie ------------------------------------------------------
+Op Europees niveau wordt elektronisch factureren gestimuleerd via de e-facturatierichtlijn en de technische norm EN~16931, die de semantische inhoud en structuur van e-facturen definieert.\autocite{EuropeanCommission_2025} Peppol fungeert als netwerk en afsprakenkader om dergelijke gestructureerde facturen veilig en gestandaardiseerd uit te wisselen tussen systemen van verzender en ontvanger. Organisaties sluiten aan op Peppol via access points; berichten worden gerouteerd op basis van unieke identificatoren, en validatieregels controleren of facturen voldoen aan de vereiste profielen.\autocite{EezeeIT_nodate}
+
+De Belgische wetgeving vertaalt deze Europese kaders in een verplichting tot B2B-e-facturatie voor binnenlandse transacties tussen btw-plichtige ondernemingen, met inwerkingtreding op 1 januari 2026.\autocite{Deloitte_2024,EuropeanCommission_2025} Documentatie van Odoo-partners en implementatoren beschrijft hoe Odoo recente versies ondersteuning bieden voor UBL-facturen en integraties met Peppol, zodat facturen rechtstreeks vanuit Odoo kunnen worden gegenereerd, gevalideerd en verstuurd.\autocite{EezeeIT_nodate,Bodoo_2024,Dynapps_2024} Tegelijk wordt benadrukt dat een correcte inrichting van stamdata (btw-nummers, adressen, bankrekeningen), boekhoudstructuur (dagboeken, rekeningen, belastingcodes) en mapping naar de Peppol-profielen essentieel is om validatiefouten en geweigerde facturen te vermijden.
+
+\subsection{Migratierisico’s en kansen: Excel naar Odoo met Peppol-focus}
+
+Literatuur en praktijkcases tonen dat veel KMO’s vertrekken van een landschap met Excelbestanden, e-mail en een reeks losse tools, zonder centrale databank of geïntegreerde processen.\autocite{Mestica_2024,SAP_2023,Gartner_2023} De overstap naar een ERP-systeem als Odoo biedt een kans om processen te standaardiseren, data te centraliseren en compliance-eisen geïntegreerd aan te pakken, maar brengt ook risico’s mee: slechte datakwaliteit, onderschatting van migratie-inspanningen, weerstand tegen verandering, en complexiteit rond e-invoicing en Peppol-configuratie.
+
+Bestaande bronnen behandelen wel de afzonderlijke bouwstenen – ERP voor KMO’s, Odoo-configuratie, e-invoicing, Peppol – maar bieden zelden één geïntegreerd, praktisch kader dat beschrijft hoe een KMO concreet kan migreren van Excel en losse tools naar Odoo, mét expliciete B2B-e-invoicing-doelstellingen.\autocite{EezeeIT_nodate,Mestica_2024} Deze bachelorproef wil die leemte opvullen door in een echte KMO-casus een gefaseerd migratiekader te ontwerpen, te configureren en te evalueren, met duidelijke KPI’s rond doorlooptijd, manuele stappen, foutcorrecties en e-facturatievalidaties.
+
+%-----------------------------------------------------------------
+
 \section{Methodologie}%
 \label{sec:methodologie}
 
-Hier beschrijf je hoe je van plan bent het onderzoek te voeren. Welke onderzoekstechniek ga je toepassen om elk van je onderzoeksvragen te beantwoorden? Gebruik je hiervoor literatuurstudie, interviews met belanghebbenden (bv.~voor requirements-analyse), experimenten, simulaties, vergelijkende studie, risico-analyse, PoC, \ldots?
+Dit onderzoek wordt opgezet als toegepast, ontwerpgericht onderzoek in samenwerking met één concrete Belgische KMO. De methodologie combineert literatuurstudie, analyse van de bestaande processen bij de KMO, ontwerp en configuratie van een gefaseerde Odoo-implementatie en een voor/na-evaluatie met meetbare KPI’s.
 
-Valt je onderwerp onder één van de typische soorten bachelorproeven die besproken zijn in de lessen Research Methods (bv.\ vergelijkende studie of risico-analyse)? Zorg er dan ook voor dat we duidelijk de verschillende stappen terug vinden die we verwachten in dit soort onderzoek!
+\subsection{Literatuurstudie en contextanalyse}
 
-Vermijd onderzoekstechnieken die geen objectieve, meetbare resultaten kunnen opleveren. Enquêtes, bijvoorbeeld, zijn voor een bachelorproef informatica meestal \textbf{niet geschikt}. De antwoorden zijn eerder meningen dan feiten en in de praktijk blijkt het ook bijzonder moeilijk om voldoende respondenten te vinden. Studenten die een enquête willen voeren, hebben meestal ook geen goede definitie van de populatie, waardoor ook niet kan aangetoond worden dat eventuele resultaten representatief zijn.
+In een eerste fase wordt een gerichte literatuurstudie uitgevoerd naar ERP-implementaties in KMO-context, succes- en faalfactoren bij migraties en de impact van digitalisering op doorlooptijd en foutgraad. Daarnaast wordt vakdocumentatie rond de Belgische B2B-e-invoicingverplichting, de werking van Peppol en de ondersteuning daarvan in Odoo geanalyseerd. Deze fase levert het theoretisch kader voor de probleemstelling, onderzoeksvragen en ontwerpkeuzes in de casus.
 
-Uit dit onderdeel moet duidelijk naar voor komen dat je bachelorproef ook technisch voldoen\-de diepgang zal bevatten. Het zou niet kloppen als een bachelorproef informatica ook door bv.\ een student marketing zou kunnen uitgevoerd worden.
+\subsection{Analyse van de huidige situatie bij de KMO (AS-IS)}
 
-Je beschrijft ook al welke tools (hardware, software, diensten, \ldots) je denkt hiervoor te gebruiken of te ontwikkelen.
+In de tweede fase wordt de geselecteerde KMO in kaart gebracht. Via interviews met sleutelgebruikers (zoals zaakvoerder, administratief verantwoordelijke en boekhouding) en analyse van bestaande hulpmiddelen (Excel-sjablonen, huidige SaaS-tools, facturatieflows) worden de huidige processen beschreven. De focus ligt op kernprocessen zoals:
+\begin{itemize}
+  \item verkoopproces van offerte tot factuur;
+  \item inkoop en voorraadopvolging;
+  \item verwerking van inkomende en uitgaande facturen;
+  \item aanmaak en verzending van facturen (momenteel vaak als PDF via e-mail).
+\end{itemize}
 
-Probeer ook een tijdschatting te maken. Hoe lang zal je met elke fase van je onderzoek bezig zijn en wat zijn de concrete \emph{deliverables} in elke fase?
+Deze AS-IS-processen worden gemodelleerd (bijvoorbeeld met BPMN of swimlane-diagrammen) en er wordt, in samenspraak met de KMO, een baseline vastgelegd met concrete KPI’s: aantal manuele stappen per proces, gemiddelde doorlooptijd per transactie, aantal foutcorrecties en huidige aanpak rond facturatie en opvolging van openstaande posten.
 
-%---------- Verwachte resultaten ----------------------------------------------
+\subsection{Ontwerp van een gefaseerd migratiekader en Odoo-configuratie (TO-BE)}
+
+Op basis van de analyse en literatuur wordt een gefaseerd migratiekader ontworpen, afgestemd op de realiteit en prioriteiten van de KMO. In plaats van meteen alle Odoo-modules te activeren, wordt gekozen voor opeenvolgende sprints, bijvoorbeeld:
+\begin{itemize}
+  \item Sprint~1: basisconfiguratie van Odoo (bedrijf, gebruikers, rechten, algemene instellingen) en implementatie van het verkoopproces en facturatie;
+  \item Sprint~2: toevoeging van Inventory en koppeling met verkoop en inkoop;
+  \item Sprint~3: verdieping van Accounting/Invoicing met automatische herinneringen, betalingsmatching en voorbereiding/activatie van Peppol-e-facturatie.
+\end{itemize}
+
+In een Odoo-sandboxomgeving (of testomgeving van een implementatiepartner) worden de nodige instellingen uitgevoerd: producten, klanten, btw-codes, dagboeken, betalingsvoorwaarden, facturatielay-out en configuratie van e-facturatie en Peppol. Waar mogelijk worden (geanonimiseerde) bestaande data van de KMO gebruikt voor proefmigraties, zodat realistische scenario’s getest kunnen worden. De KMO wordt actief betrokken via validatiesessies: schermdemo’s, proceswalkthroughs en feedbackmomenten.
+
+\subsection{Implementatie op beperkte schaal en evaluatie}
+
+In overleg met de KMO wordt een beperkte, gecontroleerde implementatie uitgevoerd (bijvoorbeeld op een subset van klanten of processen, of eerst in een testomgeving). De eerder gedefinieerde scenario’s uit de AS-IS-fase worden opnieuw doorlopen in de Odoo-omgeving. Voor elk proces worden dezelfde KPI’s gemeten als in de baseline: aantal manuele acties, doorlooptijd en aantal foutcorrecties. Het doel is om na te gaan of een reductie van minstens 20–30\% in manuele stappen en doorlooptijd haalbaar is en of het aantal foutcorrecties en openstaande posten daalt.
+
+Voor B2B-e-invoicing wordt Peppol geactiveerd of voorbereid in de Odoo-omgeving. Er worden test-e-facturen aangemaakt en verzonden via een Peppol-test- of productieomgeving, afhankelijk van de mogelijkheden van de KMO en eventuele partner. Voor elke testfactuur worden validatierapporten, eventuele blocking errors en de doorlooptijd tussen aanmaak en succesvolle aflevering geregistreerd. Dit laat toe om te beoordelen of het voorgestelde kader Peppol-e-facturatie zonder blokkerende fouten kan realiseren.
+
+\subsection*{Risicoanalyse (overzicht)}
+
+Tijdens het onderzoek wordt rekening gehouden met typische migratierisico’s, zoals:
+\begin{itemize}
+  \item Datakwaliteit: onvolledige of inconsistente stamdata kan de Odoo-configuratie en Peppol-validatie verstoren. Mitigatie: voorafgaande datacleaning en proefmigraties.
+  \item Change management: weerstand bij gebruikers tegen nieuwe processen en schermen. Mitigatie: vroege betrokkenheid, demo’s, korte trainingssessies en duidelijke handleidingen.
+  \item Scope creep: de neiging om steeds meer modules en wensen toe te voegen. Mitigatie: strikte afbakening van de sprints en expliciete afspraken met de KMO over “out of scope”-onderwerpen.
+\end{itemize}
+
+\subsection*{Verwachte deliverables}
+
+De belangrijkste deliverables van deze bachelorproef zijn:
+\begin{itemize}
+  \item Een adviesrapport met het beschreven migratiekader en aanbevelingen.
+  \item Een geconfigureerde Odoo-testomgeving (of documentatie ervan) voor de gekozen KMO-processen.
+  \item Uitgewerkte testscenario’s met baseline- en na-metingen van KPI’s.
+  \item Een samenvattend overzicht van risico’s en mitigaties voor KMO’s die naar Odoo en Peppol willen migreren.
+\end{itemize}
+
+Het eindresultaat is een adviesrapport en geverifieerd stappenplan dat niet alleen voor de betrokken KMO bruikbaar is, maar ook als leidraad kan dienen voor andere Belgische KMO’s en ERP-consultants die met Odoo en Peppol aan de slag willen.
+
+%-----------------------------------------------------------------
+
 \section{Verwacht resultaat, conclusie}%
 \label{sec:verwachte_resultaten}
 
-Hier beschrijf je welke resultaten je verwacht. Als je metingen en simulaties uitvoert, kan je hier al mock-ups maken van de grafieken samen met de verwachte conclusies. Benoem zeker al je assen en de onderdelen van de grafiek die je gaat gebruiken. Dit zorgt ervoor dat je concreet weet welk soort data je moet verzamelen en hoe je die moet meten.
+Er wordt verwacht dat een goed afgebakende, gefaseerde Odoo-implementatie aantoonbare verbeteringen kan opleveren in efficiëntie en foutreductie bij de betrokken KMO. Voor de geselecteerde kernprocessen wordt specifiek verwacht dat:
+\begin{itemize}
+  \item het aantal manuele stappen per transactie met minstens 20–30\% daalt na implementatie van Odoo ten opzichte van de uitgangssituatie met Excel en losse tools;
+  \item de doorlooptijd per proces merkbaar korter wordt, doordat documenten automatisch worden gegenereerd en data slechts één keer moet worden ingevoerd;
+  \item het aantal foutcorrecties en ad-hocherstellingen afneemt omdat gegevens centraal en consistenter worden beheerd.
+\end{itemize}
 
-Wat heeft de doelgroep van je onderzoek aan het resultaat? Op welke manier zorgt jouw bachelorproef voor een meerwaarde?
+Voor B2B-e-invoicing en Peppol wordt verwacht dat een correct geconfigureerde Odoo-omgeving in staat zal zijn gestructureerde e-facturen te genereren en via een Peppol-koppeling te verzenden zonder blokkerende validatiefouten, op voorwaarde dat de stamdata en mappings voldoende zorgvuldig zijn opgezet. De doorlooptijd tussen factuuraanmaak en succesvolle aflevering in Peppol zou lager moeten liggen dan bij de huidige PDF-per-mail-aanpak, omdat manuele stappen (opslaan, bijvoegen, verzenden, opvolgen) grotendeels worden geautomatiseerd.
 
-Hier beschrijf je wat je verwacht uit je onderzoek, met de motivatie waarom. Het is \textbf{niet} erg indien uit je onderzoek andere resultaten en conclusies vloeien dan dat je hier beschrijft: het is dan juist interessant om te onderzoeken waarom jouw hypothesen niet overeenkomen met de resultaten.
-
+De verwachte conclusie is dat een stapsgewijs migratiekader – gevalideerd in één concrete Belgische KMO – KMO’s helpt om de risico’s van een ERP-project te beheersen en tegelijk te voldoen aan de verplichtingen rond B2B-e-facturatie. Het uiteindelijke adviesrapport en de Odoo-proof-of-concept moeten zowel KMO’s als ERP-consultants in staat stellen om beter geïnformeerde beslissingen te nemen over scope, planning, benodigde expertise en prioriteiten bij Odoo-migraties in functie van de e-invoicing-deadline.
