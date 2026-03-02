@@ -1,51 +1,114 @@
 \chapter{\IfLanguageName{dutch}{Stand van zaken}{State of the art}}%
 \label{ch:stand-van-zaken}
 
-% Tip: Begin elk hoofdstuk met een paragraaf inleiding die beschrijft hoe
-% dit hoofdstuk past binnen het geheel van de bachelorproef. Geef in het
-% bijzonder aan wat de link is met het vorige en volgende hoofdstuk.
+Dit hoofdstuk bouwt verder op de inleiding door het onderzoeksdomein theoretisch te kaderen. Waar in het vorige hoofdstuk de concrete casus van Hanuman en de onderzoeksvraag werden geïntroduceerd, wordt hier de bredere academische context besproken. Eerst wordt ERP theoretisch gedefinieerd en gepositioneerd binnen digitale transformatie. Vervolgens worden kritische succesfactoren en risico’s bij ERP-implementaties besproken, met specifieke aandacht voor KMO’s. Daarna wordt het belang van business process reengineering, change management en datakwaliteit toegelicht. Tot slot wordt de Belgische context rond e-invoicing en Peppol besproken.
 
-% Pas na deze inleidende paragraaf komt de eerste sectiehoofding.
+\section{Enterprise Resource Planning (ERP)}
 
-Dit hoofdstuk bevat je literatuurstudie. De inhoud gaat verder op de inleiding, maar zal het onderwerp van de bachelorproef *diepgaand* uitspitten. De bedoeling is dat de lezer na lezing van dit hoofdstuk helemaal op de hoogte is van de huidige stand van zaken (state-of-the-art) in het onderzoeksdomein. Iemand die niet vertrouwd is met het onderwerp, weet nu voldoende om de rest van het verhaal te kunnen volgen, zonder dat die er nog andere informatie moet over opzoeken \autocite{Pollefliet2011}.
+Enterprise Resource Planning-systemen (ERP) worden in de literatuur omschreven als geïntegreerde informatiesystemen die bedrijfsprocessen over functionele domeinen heen standaardiseren en verbinden \textcite{Davenport1998}. In tegenstelling tot gefragmenteerde softwareoplossingen combineren ERP-systemen modules zoals verkoop, voorraadbeheer, boekhouding en productie in één centrale databank. Hierdoor ontstaat één consistente bron van waarheid voor organisatorische data.
 
-Je verwijst bij elke bewering die je doet, vakterm die je introduceert, enz.\ naar je bronnen. In \LaTeX{} kan dat met het commando \texttt{$\backslash${textcite\{\}}} of \texttt{$\backslash${autocite\{\}}}. Als argument van het commando geef je de ``sleutel'' van een ``record'' in een bibliografische databank in het Bib\LaTeX{}-formaat (een tekstbestand). Als je expliciet naar de auteur verwijst in de zin (narratieve referentie), gebruik je \texttt{$\backslash${}textcite\{\}}. Soms is de auteursnaam niet expliciet een onderdeel van de zin, dan gebruik je \texttt{$\backslash${}autocite\{\}} (referentie tussen haakjes). Dit gebruik je bv.~bij een citaat, of om in het bijschrift van een overgenomen afbeelding, broncode, tabel, enz. te verwijzen naar de bron. In de volgende paragraaf een voorbeeld van elk.
+Volgens \textcite{Umble2003} ligt de kernwaarde van ERP in procesintegratie en informatiestroomoptimalisatie. Door standaardisatie van processen en gegevensstructuren kunnen organisaties efficiënter werken en fouten reduceren. ERP-implementaties impliceren echter vaak fundamentele organisatorische veranderingen, omdat bestaande werkmethodes moeten worden aangepast aan het systeemontwerp \autocite{Davenport1998}.
 
-\textcite{Knuth1998} schreef een van de standaardwerken over sorteer- en zoekalgoritmen. Experten zijn het erover eens dat cloud computing een interessante opportuniteit vormen, zowel voor gebruikers als voor dienstverleners op vlak van informatietechnologie~\autocite{Creeger2009}.
+Binnen de context van digitale transformatie wordt ERP beschouwd als een structurele bouwsteen voor schaalbaarheid en procesautomatisering \autocite{Matt2015}. Digitale transformatie overstijgt louter technologie en omvat strategische heroriëntatie, procesherontwerp en cultuurverandering \autocite{Vial2019}. ERP-systemen fungeren hierbij als enabler van geïntegreerde data-analyse en procescontrole.
 
-Let er ook op: het \texttt{cite}-commando voor de punt, dus binnen de zin. Je verwijst meteen naar een bron in de eerste zin die erop gebaseerd is, dus niet pas op het einde van een paragraaf.
+\section{ERP-implementatie en kritische succesfactoren}
 
-\begin{figure}
-  \centering
-  \includegraphics[width=0.8\textwidth]{grail.jpg}
-  \caption[Voorbeeld figuur.]{\label{fig:grail}Voorbeeld van invoegen van een figuur. Zorg altijd voor een uitgebreid bijschrift dat de figuur volledig beschrijft zonder in de tekst te moeten gaan zoeken. Vergeet ook je bronvermelding niet!}
-\end{figure}
+Hoewel ERP aanzienlijke voordelen kan bieden, tonen studies aan dat implementaties gepaard gaan met aanzienlijke risico’s. \textcite{Aloini2007} identificeren risicofactoren zoals onvoldoende projectplanning, gebrekkige gebruikersbetrokkenheid en onderschatting van organisatorische impact.
 
-\begin{listing}
-  \begin{minted}{python}
-    import pandas as pd
-    import seaborn as sns
+Een van de meest geciteerde modellen rond kritische succesfactoren is dat van \textcite{Nah2001}. Zij benadrukken onder meer:
+\begin{itemize}
+    \item topmanagementondersteuning,
+    \item duidelijke projectdoelstellingen,
+    \item effectieve communicatie,
+    \item change management,
+    \item en adequaat projectmanagement.
+\end{itemize}
 
-    penguins = sns.load_dataset('penguins')
-    sns.relplot(data=penguins, x="flipper_length_mm", y="bill_length_mm", hue="species")
-  \end{minted}
-  \caption[Voorbeeld codefragment]{Voorbeeld van het invoegen van een codefragment.}
-\end{listing}
+Ook \textcite{Somers2001} stellen dat succesfactoren variëren per implementatiefase. In vroege fases ligt de nadruk op planning en scopebepaling, terwijl in latere fases training en gebruikersacceptatie cruciaal worden.
 
-\lipsum[7-20]
+Voor KMO’s zijn deze factoren nog belangrijker, omdat zij beschikken over beperkte middelen en minder gespecialiseerde IT-afdelingen. \textcite{Haddara2012} wijzen erop dat ERP-implementaties in KMO’s vaak mislukken door overschatting van interne capaciteiten en onderschatting van verandermanagement.
 
-\begin{table}
-  \centering
-  \begin{tabular}{lcr}
-    \toprule
-    \textbf{Kolom 1} & \textbf{Kolom 2} & \textbf{Kolom 3} \\
-    $\alpha$         & $\beta$          & $\gamma$         \\
-    \midrule
-    A                & 10.230           & a                \\
-    B                & 45.678           & b                \\
-    C                & 99.987           & c                \\
-    \bottomrule
-  \end{tabular}
-  \caption[Voorbeeld tabel]{\label{tab:example}Voorbeeld van een tabel.}
-\end{table}
+\section{ERP in kleine en middelgrote ondernemingen (KMO’s)}
 
+KMO’s verschillen fundamenteel van grote ondernemingen in schaal, complexiteit en middelen. Volgens \textcite{Snider2009} hebben KMO’s doorgaans minder formele processen, sterk gecentraliseerde besluitvorming, beperkte IT-expertise en beperkte budgettaire ruimte.
+
+Dit maakt hen enerzijds flexibeler, maar anderzijds kwetsbaarder bij grootschalige IT-projecten. \textcite{Haddara2012} benadrukken dat standaard ERP-methodologieën vaak onvoldoende aangepast zijn aan KMO-contexten.
+
+Gefaseerde implementatie wordt in meerdere studies naar voren geschoven als risicobeperkende strategie \autocite{Aloini2007}. Door modules stapsgewijs te activeren kan organisatorische weerstand beperkt worden en kan men leren uit tussentijdse evaluaties.
+
+\section{Open-source ERP versus proprietaire systemen}
+
+Binnen de ERP-markt bestaat een onderscheid tussen proprietaire en open-source systemen. Proprietaire systemen werken met licentiemodellen en vaste standaardprocessen. Open-source ERP-systemen bieden meer flexibiliteit in configuratie en aanpassing.
+
+Hoewel open-source oplossingen aantrekkelijk zijn voor KMO’s vanwege lagere instapkosten en flexibiliteit \autocite{Haddara2012}, verschuift het risico naar interne expertise en implementatiecapaciteit. De literatuur rond ERP-risico’s benadrukt dat onvoldoende begeleiding en onduidelijke scope belangrijke faalfactoren vormen \autocite{Aloini2007}.
+
+De keuze voor een open-source systeem zoals Odoo moet daarom niet enkel technologisch maar ook organisatorisch verantwoord worden.
+
+\section{Business Process Reengineering (BPR)}
+
+ERP-implementatie zonder procesherontwerp leidt zelden tot optimale resultaten. \textcite{Hammer1993} stellen dat technologie slechts effectief is wanneer onderliggende processen worden hertekend. Dit concept staat bekend als Business Process Reengineering (BPR).
+
+Volgens \textcite{Davenport1990} vereist procesherontwerp analyse van de huidige situatie (AS-IS), identificatie van inefficiënties en ontwerp van toekomstige processen (TO-BE). ERP moet dus niet enkel bestaande Excel-workflows digitaliseren, maar processen herstructureren op basis van geïntegreerde systeemlogica.
+
+\section{Change Management}
+
+Naast technische implementatie speelt de menselijke factor een cruciale rol. \textcite{Kotter1996} benadrukken dat organisatieverandering vaak faalt door gebrek aan urgentiebesef en onvoldoende communicatie.
+
+ERP-projecten beïnvloeden dagelijkse werkmethodes, verantwoordelijkheden en informatiestromen. Volgens \textcite{Nah2001} is training en gebruikersbetrokkenheid essentieel voor succesvolle adoptie. In kleine ondernemingen waar medewerkers meerdere rollen combineren, is deze factor nog relevanter.
+
+\section{Data governance en stamdatakwaliteit}
+
+Een geïntegreerd ERP-systeem functioneert slechts optimaal wanneer de onderliggende data correct en consistent is. \textcite{Umble2003} benadrukken dat gebrekkige master data kan leiden tot fouten in rapportering, facturatie en voorraadbeheer.
+
+Binnen de context van e-invoicing wordt datakwaliteit nog kritischer. Gestructureerde elektronische facturen vereisen correcte btw-identificatie en conformiteit met standaardformaten \autocite{EuropeanCommission_2025}. Onvolledige of foutieve stamdata kan leiden tot validatiefouten binnen het Peppol-netwerk.
+
+Migratie naar ERP biedt een opportuniteit om data te centraliseren en te standaardiseren, maar verhoogt tegelijk de complexiteit van het implementatieproces.
+
+\section{Procesperformantie en KPI-meting}
+
+Succesvolle ERP-implementatie vereist meetbare doelstellingen. \textcite{Nah2001} benadrukken dat duidelijke evaluatiemetrics essentieel zijn.
+
+Procesperformantie kan gemeten worden via indicatoren zoals:
+\begin{itemize}
+    \item doorlooptijd,
+    \item aantal manuele handelingen,
+    \item foutpercentage,
+    \item openstaande posten.
+\end{itemize}
+
+Volgens \textcite{Davenport1990} moet informatietechnologie leiden tot aantoonbare procesverbetering. Zonder vergelijking tussen AS-IS en TO-BE situatie blijft het effect van ERP moeilijk objectief aantoonbaar.
+
+\section{E-invoicing en Peppol in België}
+
+Naast interne procesoptimalisatie speelt externe compliance een belangrijke rol. De Belgische overheid verplicht vanaf 1 januari 2026 gestructureerde B2B e-facturatie via Peppol \autocite{Deloitte_2024,VLAIO2025}. Deze verplichting kadert binnen een Europese interoperabiliteitsstrategie \autocite{EuropeanCommission_2025}.
+
+Peppol maakt gebruik van gestandaardiseerde elektronische documentuitwisseling. Dit vereist correcte stamdata, validatie van factuurstructuren en technische koppeling met access points.
+
+Voor KMO’s die vandaag nog met manuele facturatie werken, impliceert dit een structurele digitaliseringssprong. ERP-systemen met geïntegreerde e-invoicingfunctionaliteit kunnen deze overgang faciliteren, mits correcte configuratie en procesalignering.
+
+\section{Positionering van Odoo binnen het ERP-landschap}
+
+Binnen het spectrum van open-source ERP-systemen neemt Odoo een bijzondere positie in als modulair en schaalbaar platform dat specifiek populair is bij kleine en middelgrote ondernemingen. In tegenstelling tot traditionele, grootschalige ERP-systemen met zware implementatietrajecten, werkt Odoo met een modulair activeringsmodel waarbij functionaliteiten zoals Sales, Inventory en Accounting afzonderlijk kunnen worden geïmplementeerd.
+
+Dit sluit aan bij de literatuur die gefaseerde implementatie aanbeveelt als risicobeperkende strategie in KMO-context \autocite{Aloini2007}. Door modules stapsgewijs te activeren kan organisatorische weerstand worden beperkt en kan iteratief worden bijgestuurd op basis van praktijkervaring.
+
+Daarnaast ondersteunt Odoo standaard integraties voor elektronische facturatie, wat relevant is binnen de Belgische Peppol-verplichting \autocite{EuropeanCommission_2025}. Hierdoor vormt het systeem een geschikt onderzoeksobject om de relatie tussen ERP-integratie en e-invoicing-compliance te analyseren.
+
+De keuze voor Odoo in deze bachelorproef is dan ook geen louter technische voorkeur, maar een onderzoeksmatig gefundeerde selectie van een open-source ERP-platform dat aansluit bij de schaal, middelen en flexibiliteitsvereisten van een servicegerichte Belgische KMO.
+
+\section{Synthese en positionering van het onderzoek}
+
+De literatuur toont aan dat ERP-systemen krachtige instrumenten zijn voor procesintegratie en digitale transformatie \autocite{Davenport1998,Matt2015}. Tegelijkertijd wijzen talrijke studies op significante implementatierisico’s, vooral in KMO-contexten \autocite{Nah2001,Haddara2012,Aloini2007}.
+
+Succesvolle implementatie vereist:
+\begin{itemize}
+    \item gefaseerde aanpak,
+    \item procesherontwerp,
+    \item sterk change management,
+    \item aandacht voor datakwaliteit,
+    \item en expliciete KPI-meting.
+\end{itemize}
+
+De verplichte Peppol-e-invoicing verhoogt de urgentie van digitale integratie in Belgische ondernemingen \autocite{Deloitte_2024}. Dit creëert een unieke combinatie van interne efficiëntieverbetering en externe compliancevereisten.
+
+Deze bachelorproef positioneert zich binnen dit theoretisch kader als een praktijkgerichte casestudy die onderzoekt hoe een gefaseerde ERP-migratie in een servicegerichte KMO kan leiden tot meetbare procesverbetering en gegarandeerde e-invoicing-compliance.

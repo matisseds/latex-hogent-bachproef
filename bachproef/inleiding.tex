@@ -5,46 +5,53 @@
 \chapter{\IfLanguageName{dutch}{Inleiding}{Introduction}}%
 \label{ch:inleiding}
 
-De inleiding moet de lezer net genoeg informatie verschaffen om het onderwerp te begrijpen en in te zien waarom de onderzoeksvraag de moeite waard is om te onderzoeken. In de inleiding ga je literatuurverwijzingen beperken, zodat de tekst vlot leesbaar blijft. Je kan de inleiding verder onderverdelen in secties als dit de tekst verduidelijkt. Zaken die aan bod kunnen komen in de inleiding~\autocite{Pollefliet2011}:
+De Belgische zakelijke markt staat voor een ingrijpende digitale transformatie. Vanaf 1 januari 2026 zijn Belgische ondernemingen wettelijk verplicht om gestructureerde B2B-e-facturen systeem-tot-systeem uit te wisselen via het Peppol-netwerk \autocite{Deloitte_2024}. Deze verplichting past binnen een bredere Europese digitaliseringsstrategie rond e-invoicing en interoperabiliteit \autocite{EuropeanCommission_2025}. Voor veel kleine ondernemingen, die vandaag nog sterk steunen op manuele administratie in Excel en een combinatie van losse tools, vormt deze deadline niet alleen een compliance-uitdaging, maar ook een aanleiding om kernprocessen fundamenteel te herdenken.
 
-\begin{itemize}
-  \item context, achtergrond
-  \item afbakenen van het onderwerp
-  \item verantwoording van het onderwerp, methodologie
-  \item probleemstelling
-  \item onderzoeksdoelstelling
-  \item onderzoeksvraag
-  \item \ldots
-\end{itemize}
+Enterprise Resource Planning (ERP)-systemen worden in de literatuur omschreven als geïntegreerde informatiesystemen die bedrijfsprocessen over functionele silo’s heen verbinden \textcite{Davenport1998}. Een succesvolle implementatie vereist echter meer dan louter software-installatie; ze impliceert procesaanpassing, dataconsistentie en organisatorische verandering \autocite{Nah2001}. Binnen het kader van digitale transformatie bij KMO’s wordt ERP vaak beschouwd als een katalysator voor standaardisatie en schaalbaarheid \autocite{Matt2015,Vial2019}.
 
+Deze bachelorproef onderzoekt deze transitie aan de hand van een concrete casus: Hanuman, een Belgische KMO gespecialiseerd in de verkoop, reparatie en het onderhoud van koffieapparatuur. Door het hybride karakter (productverkoop én service) is er een duidelijke nood aan consistente stamdata, end-to-end procesopvolging en betrouwbare facturatie. Vanuit deze context wordt onderzocht hoe een gefaseerde migratie naar het open-source ERP-systeem Odoo kan bijdragen aan procesverbetering en aan een correcte voorbereiding op B2B e-invoicing via Peppol.
 \section{\IfLanguageName{dutch}{Probleemstelling}{Problem Statement}}%
 \label{sec:probleemstelling}
 
-Uit je probleemstelling moet duidelijk zijn dat je onderzoek een meerwaarde heeft voor een concrete doelgroep. De doelgroep moet goed gedefinieerd en afgelijnd zijn. Doelgroepen als ``bedrijven,'' ``KMO's'', systeembeheerders, enz.~zijn nog te vaag. Als je een lijstje kan maken van de personen/organisaties die een meerwaarde zullen vinden in deze bachelorproef (dit is eigenlijk je steekproefkader), dan is dat een indicatie dat de doelgroep goed gedefinieerd is. Dit kan een enkel bedrijf zijn of zelfs één persoon (je co-promotor/opdrachtgever).
+Dit onderzoek richt zich op Belgische, servicegerichte KMO's met een beperkte personeelsomvang (ongeveer 1 tot 15 medewerkers) die hun administratieve kernprocessen willen digitaliseren, maar beperkt zijn in tijd, expertise en middelen. De primaire casus in deze bachelorproef is Hanuman, waarbij de zaakvoerder en administratieve medewerkers de belangrijkste stakeholders vormen.
+
+Binnen Hanuman veroorzaken gefragmenteerde tools en Excel-gestuurde opvolging vertragingen en foutgevoeligheid. Typische knelpunten zijn dubbele invoer tussen verkoop, voorraad en facturatie, beperkte traceerbaarheid van herstellingen en onderhoud, en manuele correcties bij facturen en betalingen. Daarnaast moet Hanuman zich tijdig voorbereiden op de verplichting rond gestructureerde B2B-e-facturatie via Peppol, waardoor de huidige aanpak met PDF-facturen via e-mail onvoldoende wordt. Er ontbreekt een concreet, stapsgewijs stappenplan om deze migratie gecontroleerd uit te voeren zonder grote operationele risico’s (zoals datakwaliteitsproblemen, weerstand bij gebruikers of scope creep).
 
 \section{\IfLanguageName{dutch}{Onderzoeksvraag}{Research question}}%
 \label{sec:onderzoeksvraag}
 
-Wees zo concreet mogelijk bij het formuleren van je onderzoeksvraag. Een onderzoeksvraag is trouwens iets waar nog niemand op dit moment een antwoord heeft (voor zover je kan nagaan). Het opzoeken van bestaande informatie (bv. ``welke tools bestaan er voor deze toepassing?'') is dus geen onderzoeksvraag. Je kan de onderzoeksvraag verder specifiëren in deelvragen. Bv.~als je onderzoek gaat over performantiemetingen, dan 
+De centrale onderzoeksvraag van deze bachelorproef luidt als volgt:
+
+\begin{quote}
+    \textit{Hoe kan een stapsgewijze aanpak voor de migratie naar open-source ERP (Odoo) KMO's zoals Hanuman helpen hun doorlooptijd en foutgraad te verlagen en tegelijk B2B-e-invoicing-compliance (Peppol) te waarborgen?}
+\end{quote}
+
+Om deze onderzoeksvraag te beantwoorden, worden de volgende deelvragen geformuleerd:
+
+\begin{itemize}
+    \item Welke knelpunten in de AS-IS-processen (verkoop, voorraad en service/herstellingen) bij Hanuman veroorzaken de grootste vertragingen en fouten?
+    \item Welke baseline-KPI's (bv.\ aantal manuele stappen, doorlooptijd, foutcorrecties en openstaande posten) kunnen worden vastgesteld voor de geselecteerde processen?
+    \item Welke impact heeft een gefaseerde implementatie van Odoo-modules (bv.\ Sales, Inventory, Accounting/Invoicing) op deze KPI’s in een voor/na-vergelijking?
+    \item Welke configuratie- en datavereisten (stamdata, boekhoudstructuur, mapping naar e-factuurprofielen) zijn cruciaal om Peppol-validatieproblemen en blocking errors te vermijden?
+\end{itemize}
 
 \section{\IfLanguageName{dutch}{Onderzoeksdoelstelling}{Research objective}}%
 \label{sec:onderzoeksdoelstelling}
 
-Wat is het beoogde resultaat van je bachelorproef? Wat zijn de criteria voor succes? Beschrijf die zo concreet mogelijk. Gaat het bv.\ om een proof-of-concept, een prototype, een verslag met aanbevelingen, een vergelijkende studie, enz.
+Het doel van deze bachelorproef is het ontwerpen en evalueren van een praktisch, herbruikbaar migratiekader voor de overstap van een gefragmenteerde Excel-/tool-omgeving naar Odoo binnen een servicegerichte Belgische KMO. Dit kader wordt gevalideerd via een proof-of-concept configuratie in Odoo en een set testscenario’s gebaseerd op realistische transacties (offerte--order--factuur, voorraadbewegingen, serviceopdrachten en facturatie).
+
+De succescriteria van dit onderzoek zijn:
+\begin{itemize}
+    \item een aantoonbare reductie van 20--30\% in het aantal manuele stappen binnen de geselecteerde processen;
+    \item een merkbare verkorting van de doorlooptijd in minstens één kernproces (bv.\ offerte tot factuur of herstelling tot factuur);
+    \item het kunnen genereren en verzenden van test e-facturen via Peppol zonder blokkerende validatiefouten, op voorwaarde van correcte stamdata en configuratie.
+\end{itemize}
 
 \section{\IfLanguageName{dutch}{Opzet van deze bachelorproef}{Structure of this bachelor thesis}}%
 \label{sec:opzet-bachelorproef}
 
-% Het is gebruikelijk aan het einde van de inleiding een overzicht te
-% geven van de opbouw van de rest van de tekst. Deze sectie bevat al een aanzet
-% die je kan aanvullen/aanpassen in functie van je eigen tekst.
+In Hoofdstuk~\ref{ch:stand-van-zaken} wordt de stand van zaken besproken op basis van een literatuurstudie over ERP-implementaties in KMO-context, Odoo als modulair ERP-platform en de Belgische/Europese context rond e-invoicing en Peppol.
 
-De rest van deze bachelorproef is als volgt opgebouwd:
+Hoofdstuk~\ref{ch:methodologie} licht de onderzoekstechnieken toe, waaronder de AS-IS-analyse, het ontwerp van het gefaseerde migratiekader (sprint-aanpak), de configuratie van de Odoo proof-of-concept en de methode voor KPI-metingen.
 
-In Hoofdstuk~\ref{ch:stand-van-zaken} wordt een overzicht gegeven van de stand van zaken binnen het onderzoeksdomein, op basis van een literatuurstudie.
-
-In Hoofdstuk~\ref{ch:methodologie} wordt de methodologie toegelicht en worden de gebruikte onderzoekstechnieken besproken om een antwoord te kunnen formuleren op de onderzoeksvragen.
-
-% TODO: Vul hier aan voor je eigen hoofstukken, één of twee zinnen per hoofdstuk
-
-In Hoofdstuk~\ref{ch:conclusie}, tenslotte, wordt de conclusie gegeven en een antwoord geformuleerd op de onderzoeksvragen. Daarbij wordt ook een aanzet gegeven voor toekomstig onderzoek binnen dit domein.
+In Hoofdstuk~\ref{ch:conclusie} worden de resultaten samengevat, conclusies geformuleerd en aanbevelingen gegeven voor verdere uitrol en toekomstig onderzoek.
