@@ -36,6 +36,18 @@ Dit maakt hen enerzijds flexibeler, maar anderzijds kwetsbaarder bij grootschali
 
 Gefaseerde implementatie wordt in meerdere studies naar voren geschoven als risicobeperkende strategie \autocite{Aloini2007}. Door modules stapsgewijs te activeren kan organisatorische weerstand beperkt worden en kan men leren uit tussentijdse evaluaties.
 
+\section{Migratie van losse tools naar een geïntegreerd ERP-systeem}
+
+Veel KMO’s starten hun digitaliseringstraject vanuit een versnipperde IT-omgeving waarin Excel, e-mail, Word-documenten en afzonderlijke boekhoudpakketten naast elkaar bestaan. Dergelijke oplossingen zijn laagdrempelig en flexibel in een beginfase, maar worden problematisch wanneer het aantal klanten, producten, facturen en interne processen toeneemt. Informatie wordt dan verspreid opgeslagen, waardoor dubbele invoer, foutgevoelige berekeningen en beperkte traceerbaarheid ontstaan.
+
+Een ERP-migratie heeft in deze context niet enkel als doel om bestaande documenten te digitaliseren, maar om de onderliggende processen te integreren. Waar Excel vooral geschikt is voor afzonderlijke lijsten of berekeningen, ondersteunt een ERP-systeem procesketens waarbij klantgegevens, offertes, leveringen, voorraadmutaties, facturen en betalingen aan elkaar gekoppeld worden. Dit sluit aan bij de visie van \textcite{Davenport1998}, die ERP-systemen beschrijft als systemen die informatie en processen over functionele domeinen heen verbinden.
+
+De overgang van losse tools naar ERP creëert echter ook risico’s. Bestaande data moet opgeschoond, gestandaardiseerd en gemigreerd worden. Foutieve klantgegevens, ontbrekende btw-nummers, inconsistente productcodes of onvolledige voorraadstanden kunnen leiden tot foutieve facturen, voorraadverschillen of validatiefouten bij elektronische facturatie. Dit maakt data governance en master data management cruciale randvoorwaarden voor een succesvolle migratie \autocite{Umble2003}.
+
+Voor Belgische KMO’s wordt deze uitdaging versterkt door de verplichting tot gestructureerde elektronische B2B-facturatie vanaf 1 januari 2026. Een PDF-factuur of manuele facturatieflow volstaat dan niet langer voor binnenlandse transacties tussen btw-plichtige ondernemingen \autocite{BelgiumEInvoice_2026}. Ondernemingen die vandaag nog sterk afhankelijk zijn van Excel en e-mail moeten daarom niet alleen hun interne efficiëntie verbeteren, maar ook voldoen aan nieuwe externe compliancevereisten.
+
+In de context van Hanuman BV betekent dit dat een ERP-migratie zowel een operationele als een juridische relevantie heeft. De migratie naar Odoo moet enerzijds leiden tot minder manuele handelingen, betere traceerbaarheid en real-time inzicht in voorraad en facturatie. Anderzijds moet het systeem correct worden geconfigureerd om elektronische facturen via Peppol te kunnen genereren en verwerken.
+
 \section{Open-source ERP versus proprietaire systemen}
 
 Binnen de ERP-markt bestaat een onderscheid tussen proprietaire en open-source systemen. Proprietaire systemen werken met licentiemodellen en vaste standaardprocessen. Open-source ERP-systemen bieden meer flexibiliteit in configuratie en aanpassing.
@@ -52,7 +64,7 @@ Volgens \textcite{Davenport1990} vereist procesherontwerp analyse van de huidige
 
 \section{Change Management}
 
-Naast technische implementatie speelt de menselijke factor een cruciale rol. \textcite{Kotter1996} benadrukken dat organisatieverandering vaak faalt door gebrek aan urgentiebesef en onvoldoende communicatie.
+Naast technische implementatie speelt de menselijke factor een cruciale rol. \textcite{Kotter1996} benadrukt dat organisatieverandering vaak faalt door gebrek aan urgentiebesef en onvoldoende communicatie.
 
 ERP-projecten beïnvloeden dagelijkse werkmethodes, verantwoordelijkheden en informatiestromen. Volgens \textcite{Nah2001} is training en gebruikersbetrokkenheid essentieel voor succesvolle adoptie. In kleine ondernemingen waar medewerkers meerdere rollen combineren, is deze factor nog relevanter.
 
@@ -84,17 +96,35 @@ Naast interne procesoptimalisatie speelt externe compliance een belangrijke rol.
 
 Peppol maakt gebruik van gestandaardiseerde elektronische documentuitwisseling. Dit vereist correcte stamdata, validatie van factuurstructuren en technische koppeling met access points.
 
+Peppol werkt volgens een zogenaamd four-corner model. Daarbij communiceren verzender en ontvanger niet rechtstreeks met elkaar, maar via hun respectieve access points. Dit betekent dat een onderneming slechts met één Peppol-serviceprovider moet verbinden om documenten te kunnen uitwisselen met andere deelnemers binnen het netwerk. Voor KMO’s verlaagt dit de technische complexiteit, omdat er geen afzonderlijke koppeling per klant of leverancier nodig is \autocite{OpenPeppolFramework_2026}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{../graphics/peppol-model.png}
+    \caption{Het Peppol four-corner model voor elektronische documentuitwisseling. Bron: OpenPeppol \autocite{OpenPeppolFramework_2026}.}
+    \label{fig:peppol-four-corner}
+\end{figure}
+
 Voor KMO’s die vandaag nog met manuele facturatie werken, impliceert dit een structurele digitaliseringssprong. ERP-systemen met geïntegreerde e-invoicingfunctionaliteit kunnen deze overgang faciliteren, mits correcte configuratie en procesalignering.
 
 \section{Positionering van Odoo binnen het ERP-landschap}
 
-Binnen het spectrum van open-source ERP-systemen neemt Odoo een bijzondere positie in als modulair en schaalbaar platform dat specifiek populair is bij kleine en middelgrote ondernemingen. In tegenstelling tot traditionele, grootschalige ERP-systemen met zware implementatietrajecten, werkt Odoo met een modulair activeringsmodel waarbij functionaliteiten zoals Sales, Inventory en Accounting afzonderlijk kunnen worden geïmplementeerd.
+Binnen het spectrum van open-source ERP-systemen neemt Odoo een bijzondere positie in als modulair en schaalbaar platform dat specifiek populair is bij kleine en middelgrote ondernemingen. Odoo integreert bedrijfsapplicaties zoals CRM, Sales, Inventory, Accounting, Invoicing en Purchase binnen één omgeving. In tegenstelling tot traditionele, grootschalige ERP-systemen met zware implementatietrajecten, werkt Odoo met een modulair activeringsmodel waarbij functionaliteiten afzonderlijk kunnen worden geïmplementeerd.
 
-Dit sluit aan bij de literatuur die gefaseerde implementatie aanbeveelt als risicobeperkende strategie in KMO-context \autocite{Aloini2007}. Door modules stapsgewijs te activeren kan organisatorische weerstand worden beperkt en kan iteratief worden bijgestuurd op basis van praktijkervaring.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{../graphics/odoo-modules.png}
+    \caption{Conceptuele voorstelling van Odoo als modulair ERP-systeem met centrale databank.}
+    \label{fig:odoo-module-integratie}
+\end{figure}
 
-Daarnaast ondersteunt Odoo standaard integraties voor elektronische facturatie, wat relevant is binnen de Belgische Peppol-verplichting \autocite{EuropeanCommission_2025}. Hierdoor vormt het systeem een geschikt onderzoeksobject om de relatie tussen ERP-integratie en e-invoicing-compliance te analyseren.
+Deze modulaire structuur is relevant voor KMO’s omdat ERP-implementaties vaak beperkt worden door budget, interne expertise en veranderingscapaciteit. Een onderneming hoeft niet noodzakelijk in één keer een volledig ERP-systeem te implementeren, maar kan starten met kritieke processen zoals verkoop en facturatie. Nadien kunnen voorraadbeheer, aankoop, reparatiebeheer en rapportering stapsgewijs worden toegevoegd.
 
-De keuze voor Odoo in deze bachelorproef is dan ook geen louter technische voorkeur, maar een onderzoeksmatig gefundeerde selectie van een open-source ERP-platform dat aansluit bij de schaal, middelen en flexibiliteitsvereisten van een servicegerichte Belgische KMO.
+Dit sluit aan bij de literatuur die gefaseerde implementatie aanbeveelt als risicobeperkende strategie in KMO-context \autocite{Aloini2007,Haddara2012}. Door modules stapsgewijs te activeren kan organisatorische weerstand worden beperkt en kan iteratief worden bijgestuurd op basis van praktijkervaring.
+
+Tegelijk betekent de flexibiliteit van Odoo niet dat implementatie zonder voorbereiding kan gebeuren. Landenspecifieke configuratie, fiscale localisatie en elektronische facturatie zijn afhankelijk van correcte bedrijfsgegevens, btw-instellingen en boekhoudkundige configuratie. Voor Belgische ondernemingen is dit extra belangrijk, omdat e-invoicing en Peppol-integratie rechtstreeks afhankelijk zijn van correcte stamdata zoals btw-nummers, adressen, bankrekeningen en Peppol-identificatoren.
+
+De keuze voor Odoo in deze bachelorproef is dan ook geen louter technische voorkeur, maar een onderzoeksmatig gefundeerde selectie van een open-source ERP-platform dat aansluit bij de schaal, middelen en flexibiliteitsvereisten van een servicegerichte Belgische KMO zoals Hanuman BV.
 
 \section{Synthese en positionering van het onderzoek}
 

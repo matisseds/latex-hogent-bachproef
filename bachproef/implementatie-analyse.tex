@@ -1,0 +1,205 @@
+%==============================================================================
+% Implementatie en analyse
+%==============================================================================
+
+\chapter{Implementatie en analyse}
+\label{ch:implementatie-analyse}
+
+Dit hoofdstuk vertaalt de methodologische aanpak uit Hoofdstuk~\ref{ch:methodologie} naar de concrete casus van Hanuman BV. Waar de methodologie beschreef hoe het onderzoek werd opgezet, wordt in dit hoofdstuk de huidige werking van Hanuman geanalyseerd en vertaald naar een gewenste TO-BE situatie binnen Odoo.
+
+De analyse vertrekt vanuit een AS-IS beschrijving van de bestaande processen. Deze beschrijving is gebaseerd op shadowing gedurende één werkdag, informele gesprekken met betrokken stakeholders en analyse van bestaande documenten en werkwijzen. Op basis daarvan worden de belangrijkste knelpunten geïdentificeerd. Vervolgens worden deze knelpunten vertaald naar functionele vereisten, een afgebakende scope en een TO-BE ontwerp. Dit TO-BE ontwerp vormt de basis voor de Proof of Concept die in een latere fase verder wordt uitgewerkt.
+
+\section{AS-IS analyse van Hanuman BV}
+\label{sec:asis-analyse}
+
+Hanuman BV is een Belgische KMO actief in de verkoop, het onderhoud en de herstelling van professionele koffieapparatuur. De onderneming combineert productgerichte processen, zoals verkoop en voorraadbeheer, met servicegerichte processen, zoals onderhoudsinterventies en herstellingen. Hierdoor ontstaat een hybride bedrijfscontext waarin klantgegevens, productinformatie, voorraadbewegingen, serviceopdrachten en facturatie nauw met elkaar verbonden zijn.
+
+De huidige werking is in belangrijke mate gebaseerd op een combinatie van losse hulpmiddelen. Voor administratieve opvolging wordt gebruikgemaakt van Excel, e-mail en afzonderlijke documenten. Facturen en offertes worden niet volledig geïntegreerd met voorraadbeheer of serviceopvolging. Hierdoor ontstaan meerdere overdrachtsmomenten waarbij gegevens opnieuw moeten worden ingevoerd of gecontroleerd.
+
+Tijdens de shadowing werd vooral gekeken naar vier kernprocessen:
+
+\begin{itemize}
+    \item verkoop en facturatie;
+    \item voorraadopvolging;
+    \item service en herstellingen;
+    \item voorbereiding op elektronische facturatie via Peppol.
+\end{itemize}
+
+\subsection{Verkoop en facturatie}
+
+In de huidige situatie verloopt het verkoopproces grotendeels manueel. Klantvragen komen binnen via e-mail, telefoon of rechtstreeks contact. Op basis daarvan wordt een offerte of verkoopdocument opgesteld. De informatie die nodig is voor deze documenten, zoals klantgegevens, productinformatie, aantallen, prijzen en btw-gegevens, wordt vaak opgezocht in bestaande documenten of manueel overgenomen.
+
+Wanneer een verkoop bevestigd wordt, moet dezelfde informatie opnieuw gebruikt worden voor facturatie. Omdat offertes, leveringen en facturen niet automatisch aan elkaar gekoppeld zijn, ontstaat er een verhoogde kans op fouten of inconsistenties. Voorbeelden hiervan zijn foutieve klantgegevens, verkeerde productomschrijvingen, afwijkende prijzen of vergeten facturatie na levering.
+
+De doorlooptijd van dit proces wordt niet automatisch gemeten in de huidige situatie. Op basis van observatie tijdens de shadowing en gesprekken met betrokkenen kan echter worden vastgesteld dat het proces meerdere manuele stappen bevat, zoals gegevens opzoeken, overtypen, controleren, factuur opstellen, PDF genereren en versturen via e-mail.
+
+\subsection{Voorraadopvolging}
+
+Voorraadbeheer gebeurt niet volledig geïntegreerd met verkoop, aankoop of herstellingen. Onderdelen en toestellen worden opgevolgd via een combinatie van manuele registratie en losse bestanden. Hierdoor is er geen permanent real-time overzicht van beschikbare voorraad, gereserveerde onderdelen of onderdelen die reeds gebruikt werden in een herstelling.
+
+Deze werkwijze is vooral risicovol bij service- en herstelprocessen. Wanneer een onderdeel gebruikt wordt voor een herstelling, moet dit manueel worden bijgewerkt in de voorraadopvolging. Indien dit niet onmiddellijk gebeurt, kan de weergegeven voorraad afwijken van de werkelijke voorraad. Dit kan leiden tot verkeerde inschattingen bij nieuwe herstellingen of bestellingen.
+
+Daarnaast is er geen automatische koppeling tussen voorraadniveaus en aankoopbehoeften. Lage voorraad leidt dus niet automatisch tot een bestelvoorstel of waarschuwing. Hierdoor is de onderneming afhankelijk van manuele controle en ervaring van medewerkers.
+
+\subsection{Service en herstellingen}
+
+Een belangrijk deel van de werking van Hanuman BV bestaat uit onderhoud en herstellingen van koffieapparatuur. Deze processen zijn servicegericht en verschillen van een klassieke verkoopflow, omdat er vaak een combinatie is van arbeid, onderdelen, diagnose, opvolging en facturatie.
+
+In de huidige situatie wordt service-informatie verspreid bijgehouden. Gegevens over klant, toestel, serienummer, uitgevoerde handelingen en gebruikte onderdelen zijn niet altijd centraal gekoppeld aan één dossier. Hierdoor is het moeilijker om snel een volledig overzicht te krijgen van de historiek van een toestel of klant.
+
+Wanneer tijdens een herstelling onderdelen worden gebruikt, moet deze informatie nadien ook verwerkt worden in de voorraad en facturatie. Omdat deze koppeling niet automatisch gebeurt, ontstaat er een risico op vergeten onderdelen, foutieve facturatie of ontbrekende historiek.
+
+\subsection{E-invoicing en Peppol}
+
+De huidige facturatie gebeurt hoofdzakelijk via klassieke documenten en verzending per e-mail. In het kader van de Belgische verplichting tot gestructureerde B2B e-facturatie vanaf 1 januari 2026 vormt dit een belangrijk aandachtspunt. Een PDF-factuur via e-mail volstaat dan niet langer voor binnenlandse transacties tussen btw-plichtige ondernemingen.
+
+Voor een correcte Peppol-werking zijn onder meer correcte klantgegevens, btw-nummers, adressen, bankgegevens, factuurstructuur en elektronische facturatie-instellingen nodig. In de huidige situatie is deze datakwaliteit niet automatisch afdwingbaar. Daardoor bestaat het risico dat elektronische facturen later niet correct gevalideerd of verzonden kunnen worden.
+
+\section{Knelpunten in de huidige situatie}
+\label{sec:knelpunten}
+
+Op basis van de AS-IS analyse kunnen verschillende knelpunten worden geïdentificeerd. Deze knelpunten situeren zich niet uitsluitend op technisch vlak, maar hebben ook betrekking op procesorganisatie, datakwaliteit en toekomstige compliance.
+
+\subsection{Dubbele gegevensinvoer}
+
+Een eerste belangrijk knelpunt is dubbele gegevensinvoer. Klantgegevens, productinformatie en facturatiegegevens worden op meerdere plaatsen gebruikt, maar niet centraal beheerd. Hierdoor moeten gegevens regelmatig opnieuw worden ingevoerd of gekopieerd tussen documenten, e-mails en bestanden.
+
+Dubbele invoer verhoogt de kans op fouten en zorgt voor extra administratieve belasting. Wanneer gegevens op meerdere plaatsen voorkomen, is het bovendien moeilijk om te bepalen welke versie correct of actueel is.
+
+\subsection{Beperkte traceerbaarheid}
+
+Een tweede knelpunt is de beperkte traceerbaarheid tussen documenten en processtappen. Offertes, bestellingen, leveringen, herstellingen en facturen zijn niet altijd automatisch met elkaar verbonden. Hierdoor is het moeilijk om snel te achterhalen welke stappen reeds uitgevoerd zijn en welke nog openstaan.
+
+Vooral bij serviceprocessen is traceerbaarheid belangrijk. Een herstelling bestaat vaak uit meerdere stappen: ontvangst van het toestel, diagnose, gebruik van onderdelen, uitvoering van arbeid en facturatie. Wanneer deze stappen verspreid worden bijgehouden, ontstaat er risico op onvolledige opvolging.
+
+\subsection{Geen real-time voorraadbeeld}
+
+Een derde knelpunt is het ontbreken van een real-time voorraadbeeld. Voorraadbewegingen worden niet automatisch gekoppeld aan verkoop, aankoop of herstellingen. Daardoor kan de administratieve voorraad afwijken van de werkelijke voorraad.
+
+Dit is vooral problematisch voor onderdelen die nodig zijn bij herstellingen. Wanneer een onderdeel administratief nog beschikbaar lijkt, maar in werkelijkheid reeds gebruikt werd, kan dit leiden tot vertragingen of foutieve planning.
+
+\subsection{Manuele facturatie en foutgevoeligheid}
+
+Het facturatieproces bevat meerdere manuele stappen. Gegevens moeten worden overgenomen uit verkoopinformatie, service-informatie of voorraadgegevens. Elke manuele stap verhoogt het risico op fouten, zoals verkeerde bedragen, ontbrekende onderdelen, foutieve btw-gegevens of onvolledige klantinformatie.
+
+Daarnaast zorgt manuele facturatie voor een langere doorlooptijd. Een factuur kan pas worden opgesteld nadat alle nodige informatie is verzameld en gecontroleerd. Hierdoor ontstaat vertraging tussen uitvoering van een verkoop- of serviceproces en effectieve facturatie.
+
+\subsection{Beperkte voorbereiding op Peppol-compliance}
+
+Een laatste belangrijk knelpunt is de beperkte voorbereiding op gestructureerde elektronische facturatie. Peppol vereist meer dan enkel het digitaal versturen van een factuur. De onderliggende data moet correct, volledig en gestructureerd zijn.
+
+Onvolledige klantgegevens, foutieve btw-nummers, ontbrekende bankgegevens of foutieve factuurstructuren kunnen leiden tot validatiefouten. Hierdoor is datakwaliteit een cruciale voorwaarde voor een succesvolle Peppol-implementatie.
+
+\section{Requirements en scope}
+\label{sec:requirements-scope}
+
+De vastgestelde knelpunten worden vertaald naar functionele en niet-functionele vereisten voor de TO-BE situatie. Deze vereisten bepalen welke processen binnen de Proof of Concept worden meegenomen en welke elementen buiten scope blijven.
+
+\subsection{Functionele vereisten}
+
+De ERP-oplossing moet minstens de volgende functionele vereisten ondersteunen:
+
+\begin{itemize}
+    \item centraal beheer van klanten, leveranciers en producten;
+    \item aanmaak van offertes en verkooporders binnen één geïntegreerde verkoopflow;
+    \item automatische omzetting van verkooporders naar facturen;
+    \item koppeling tussen verkoop, voorraad en levering;
+    \item registratie van onderdelen die gebruikt worden in herstellingen of onderhoud;
+    \item ondersteuning voor service- of reparatieprocessen;
+    \item correcte toepassing van btw-regels en factuurgegevens;
+    \item voorbereiding op elektronische facturatie via Peppol;
+    \item mogelijkheid om processtappen en documenten traceerbaar op te volgen.
+\end{itemize}
+
+\subsection{Niet-functionele vereisten}
+
+Naast functionele vereisten zijn ook niet-functionele vereisten belangrijk:
+
+\begin{itemize}
+    \item de oplossing moet bruikbaar zijn voor een kleine onderneming met beperkte IT-capaciteit;
+    \item de implementatie moet gefaseerd kunnen gebeuren;
+    \item de configuratie moet zoveel mogelijk steunen op standaardfunctionaliteiten;
+    \item de oplossing moet voldoende schaalbaar zijn voor toekomstige uitbreiding;
+    \item de datakwaliteit moet bewaakt worden via centrale stamdata;
+    \item de oplossing moet begrijpelijk blijven voor niet-technische gebruikers.
+\end{itemize}
+
+\subsection{Scope van de Proof of Concept}
+
+De Proof of Concept richt zich op de kernprocessen die het meest relevant zijn voor Hanuman BV en rechtstreeks aansluiten bij de onderzoeksvraag. Binnen scope vallen:
+
+\begin{itemize}
+    \item verkoopproces van offerte tot factuur;
+    \item voorraadbewegingen gekoppeld aan verkoop, aankoop en herstelling;
+    \item registratie en facturatie van service- en herstellingsactiviteiten;
+    \item basisconfiguratie van klanten, producten, leveranciers en btw;
+    \item controle van Peppol-readiness.
+\end{itemize}
+
+Niet binnen scope vallen:
+
+\begin{itemize}
+    \item volledige productie-uitrol van Odoo;
+    \item integratie met externe boekhoudsoftware;
+    \item volledige bankreconciliatie;
+    \item geavanceerde rapportering op managementniveau;
+    \item maatwerkontwikkeling buiten standaard Odoo-functionaliteiten;
+    \item langdurige gebruikersacceptatietesten in productie.
+\end{itemize}
+
+Deze afbakening zorgt ervoor dat de Proof of Concept beheersbaar blijft en gericht kan aantonen of het voorgestelde migratiekader technisch en organisatorisch haalbaar is.
+
+\section{TO-BE ontwerp}
+\label{sec:tobe-ontwerp}
+
+De TO-BE situatie beschrijft hoe de kernprocessen van Hanuman BV zouden verlopen binnen een geïntegreerde Odoo-omgeving. Het uitgangspunt is dat Odoo fungeert als centrale databank en procesmotor voor verkoop, voorraad, service, facturatie en e-invoicing.
+
+\subsection{Centrale stamdata}
+
+In de TO-BE situatie worden klanten, leveranciers, producten, onderdelen en diensten centraal beheerd in Odoo. Hierdoor ontstaat één gedeelde databron die door meerdere modules gebruikt wordt. Klantgegevens worden bijvoorbeeld niet opnieuw ingevoerd bij elke offerte of factuur, maar hergebruikt vanuit de contactfiche.
+
+Voor Peppol-compliance is deze centrale stamdata cruciaal. Btw-nummers, adressen, bankgegevens en facturatiegegevens moeten correct geregistreerd zijn zodat elektronische facturen gevalideerd kunnen worden.
+
+\subsection{Verkoopflow}
+
+De gewenste verkoopflow verloopt van offerte naar verkooporder en vervolgens naar factuur. Een klantvraag wordt geregistreerd in Odoo, waarna een offerte wordt opgesteld op basis van bestaande klant- en productgegevens. Bij goedkeuring wordt de offerte omgezet naar een verkooporder.
+
+Vanuit het verkooporder kunnen vervolgens automatisch gerelateerde documenten ontstaan, zoals leveringsopdrachten en facturen. Hierdoor wordt de koppeling tussen verkoop, voorraad en facturatie versterkt en daalt de nood aan manuele gegevensovername.
+
+\subsection{Voorraadflow}
+
+In de TO-BE situatie worden voorraadbewegingen automatisch geregistreerd wanneer producten worden ontvangen, verkocht of gebruikt in een herstelling. Hierdoor ontstaat een realistischer en actueler voorraadbeeld.
+
+Onderdelen die gebruikt worden in service- of herstelprocessen worden gekoppeld aan de juiste transactie. Hierdoor kan de voorraad correct worden verminderd en kan het gebruikte onderdeel later ook correct worden gefactureerd.
+
+\subsection{Service- en herstelprocessen}
+
+Voor service en herstellingen moet Odoo toelaten om klant, toestel, uitgevoerde werken en gebruikte onderdelen beter aan elkaar te koppelen. Het doel is niet enkel om een factuur te kunnen maken, maar ook om historiek en traceerbaarheid op te bouwen.
+
+Een herstelling of onderhoudsinterventie kan in de TO-BE situatie gekoppeld worden aan een klant en eventueel aan een toestel of serienummer. Arbeid en onderdelen kunnen vervolgens op een gestructureerde manier worden verwerkt in de facturatie.
+
+\subsection{Facturatie en Peppol}
+
+Facturen worden in de TO-BE situatie gegenereerd op basis van onderliggende verkoop- of servicegegevens. Dit vermindert het aantal manuele stappen en beperkt het risico op fouten.
+
+Voor Peppol wordt nagegaan of de configuratie voldoende voorbereid is om gestructureerde elektronische facturen te genereren. Daarbij zijn onder meer correcte bedrijfsgegevens, klantgegevens, btw-instellingen, bankgegevens en factuurvelden belangrijk.
+
+\section{Voorbereiding van de Proof of Concept}
+\label{sec:voorbereiding-poc}
+
+Op basis van de AS-IS analyse, de geïdentificeerde knelpunten en het TO-BE ontwerp wordt een Proof of Concept opgezet in Odoo. Deze PoC heeft als doel om te valideren of de ontworpen processen uitvoerbaar zijn binnen een gecontroleerde ERP-omgeving.
+
+De PoC zal niet worden opgevat als een volledige productie-implementatie, maar als een functionele validatie van het migratiekader. Daarbij wordt gewerkt met representatieve stamdata, realistische procesflows en concrete testscenario’s.
+
+De verdere uitwerking van de PoC omvat onder meer:
+
+\begin{itemize}
+    \item configuratie van de relevante Odoo-modules;
+    \item invoer van klanten, leveranciers, producten, onderdelen en diensten;
+    \item uitvoering van verkoop-, voorraad-, service- en facturatiescenario’s;
+    \item controle van documenttraceerbaarheid;
+    \item evaluatie van Peppol-readiness;
+    \item vergelijking van AS-IS en TO-BE aan de hand van KPI’s.
+\end{itemize}
+
+De concrete configuratie, screenshots, testscenario’s en resultaten worden in de volgende fase van deze bachelorproef verder uitgewerkt.
