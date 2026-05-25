@@ -13,6 +13,9 @@
 
 \usepackage{lipsum} % For blind text, can be removed after adding actual content
 
+\usepackage{float}
+\usepackage{tikz}
+
 %% Pictures to include in the text can be put in the graphics/ folder
 \graphicspath{{../graphics/}}
 
@@ -52,7 +55,7 @@
 \author{De Smet Matisse}
 \supervisor{Antjon Tom}
 \cosupervisor{De Smet Jurgen}
-\title[Title]%
+\title[Odoo-migratiekader met Peppol-compliance]%
     {Gefaseerde implementatie van een open-source ERP-systeem in een Belgische KMO: Ontwerp en evaluatie van een Odoo-migratiekader met Peppol-compliance}
 \academicyear{\advance\year by -1 \the\year--\advance\year by 1 \the\year}
 \examperiod{1}
@@ -114,7 +117,7 @@
 % lines.
 \listoftables
 
-\listoflistings
+%\listoflistings
 
 % Als je een lijst van afkortingen of termen wil toevoegen, dan hoort die
 % hier thuis. Gebruik bijvoorbeeld de ``glossaries'' package.
@@ -135,6 +138,9 @@
 \input{methodologie}
 
 \input{implementatie-analyse.tex}
+\input{poc.tex}
+\input{evaluatie.tex}
+
 
 % Voeg hier je eigen hoofdstukken toe die de ``corpus'' van je bachelorproef
 % vormen. De structuur en titels hangen af van je eigen onderzoek. Je kan bv.

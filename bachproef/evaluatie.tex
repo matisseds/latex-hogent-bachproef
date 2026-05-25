@@ -1,0 +1,371 @@
+%==============================================================================
+% Evaluatie
+%==============================================================================
+
+\chapter{Evaluatie}
+\label{ch:evaluatie}
+
+Dit hoofdstuk evalueert de voorgestelde ERP-migratie op basis van de uitgewerkte TO-BE situatie en de voorbereide Proof of Concept. De evaluatie focust op procesverbetering, operationele efficiëntie, documenttraceerbaarheid en voorbereiding op Peppol-compliance.
+
+Omdat de oorspronkelijke werkomgeving van Hanuman BV beperkt historische logdata bevatte, is de evaluatie gebaseerd op observaties tijdens de AS-IS analyse, scenario-gebaseerde simulaties en validatie binnen de gecontroleerde Odoo-omgeving.
+
+De evaluatie heeft niet als doel om een volledige productie-implementatie te vervangen, maar om na te gaan of de voorgestelde gefaseerde migratie technisch en organisatorisch haalbaar is voor een servicegerichte Belgische KMO.
+
+\section{KPI-evaluatiekader}
+\label{sec:kpi-evaluatiekader}
+
+Om de impact van de voorgestelde ERP-implementatie objectief te kunnen beoordelen, werd een evaluatiekader opgesteld op basis van Key Performance Indicators (KPI’s).
+
+Deze KPI’s werden geselecteerd op basis van:
+\begin{itemize}
+    \item de geïdentificeerde knelpunten in de AS-IS analyse;
+    \item de doelstellingen van de implementatie;
+    \item de onderzoeksvraag van deze bachelorproef;
+    \item relevante procesindicatoren uit de literatuur rond ERP-implementatie.
+\end{itemize}
+
+De evaluatie focust voornamelijk op:
+\begin{itemize}
+    \item reductie van manuele handelingen;
+    \item verbetering van procesdoorlooptijd;
+    \item vermindering van foutgevoeligheid;
+    \item verbetering van traceerbaarheid;
+    \item voorbereiding op elektronische facturatie.
+\end{itemize}
+
+\subsection{Geselecteerde KPI’s}
+
+Tabel~\ref{tab:kpis} geeft een overzicht van de gebruikte KPI’s.
+
+\begin{table}[H]
+\centering
+\caption{Gebruikte KPI’s voor evaluatie}
+\label{tab:kpis}
+\begin{tabular}{|p{4cm}|p{5cm}|p{4cm}|}
+\hline
+\textbf{KPI} & \textbf{Beschrijving} & \textbf{Meetmethode} \\
+\hline
+Aantal manuele stappen & Aantal handmatige acties binnen een procesflow & Observatie en scenarioanalyse \\
+\hline
+Doorlooptijd & Tijd tussen start en afronding van een proces & Tijdsinschatting per scenario \\
+\hline
+Correctiemomenten & Aantal noodzakelijke manuele correcties & Analyse van procesflows \\
+\hline
+Documenttraceerbaarheid & Mogelijkheid om gekoppelde documenten op te volgen & Procesvalidatie \\
+\hline
+Voorraadactualiteit & Mate waarin voorraad overeenkomt met werkelijkheid & Simulatie van stockmutaties \\
+\hline
+Peppol-readiness & Voorbereiding op elektronische facturatie & Configuratiecontrole \\
+\hline
+\end{tabular}
+\end{table}
+
+Naast de kwalitatieve beoordeling werd per kernproces ook een indicatieve vergelijking gemaakt tussen de AS-IS situatie en de TO-BE situatie. Tabel~\ref{tab:kpi-resultaten} vat de belangrijkste KPI-resultaten samen.
+
+\begin{table}[H]
+\centering
+\caption{Samenvattende vergelijking van KPI-resultaten}
+\label{tab:kpi-resultaten}
+\begin{tabular}{|p{4cm}|p{3cm}|p{3cm}|p{3cm}|}
+\hline
+\textbf{KPI} & \textbf{AS-IS} & \textbf{TO-BE} & \textbf{Verbetering} \\
+\hline
+Manuele stappen verkoopflow & 8 & 4 & -50\% \\
+\hline
+Doorlooptijd verkoopflow & 15--20 min & 5--8 min & -55\% tot -65\% \\
+\hline
+Correctiemomenten per 10 factuurflows & 2--3 & 0--1 & Sterke daling \\
+\hline
+Zoektijd servicedossier & 5--10 min & 1--2 min & -70\% tot -80\% \\
+\hline
+Voorraadactualiteit & Laattijdig bijgewerkt & Automatisch bijgewerkt & Sterke verbetering \\
+\hline
+Documenttraceerbaarheid & Beperkt & Geïntegreerd & Sterke verbetering \\
+\hline
+Peppol-readiness & Beperkt & Grotendeels voorbereid & Sterke verbetering \\
+\hline
+\end{tabular}
+\end{table}
+
+De cijfers tonen aan dat vooral de verkoop- en facturatieflow aanzienlijk efficiënter kan verlopen. De grootste winst ontstaat door het hergebruik van centrale klant- en productgegevens en door de automatische koppeling tussen offerte, verkooporder, levering en factuur.
+
+Naast de samenvattende KPI-resultaten werd per kernproces een meer gedetailleerde vergelijking gemaakt. Deze vergelijking is gebaseerd op de processtappen uit de AS-IS analyse en de overeenkomstige standaardflows binnen Odoo, zoals offerte naar verkooporder, verkooporder naar levering, verkooporder naar factuur en reparatie naar onderdelenverbruik en facturatie.
+
+\begin{table}[H]
+\centering
+\caption{Gedetailleerde KPI-vergelijking per kernproces}
+\label{tab:kpi-detailprocessen}
+\begin{tabular}{|p{4cm}|p{3cm}|p{3cm}|p{3cm}|}
+\hline
+\textbf{Proces / KPI} & \textbf{AS-IS} & \textbf{TO-BE in Odoo} & \textbf{Effect} \\
+\hline
+Offerte opstellen & 8--12 min & 3--5 min & Sneller door hergebruik klant- en productdata \\
+\hline
+Offerte naar factuur & 15--20 min & 5--8 min & Minder overnamewerk door automatische documentflow \\
+\hline
+Aantal manuele stappen verkoopflow & 8 & 4 & -50\% \\
+\hline
+Klantgegevens opnieuw controleren & 3--4 keer & 1 keer & Centrale contactfiche \\
+\hline
+Voorraadupdate na verkoop of herstelling & Einde werkdag & Onmiddellijk bij validatie & Real-time voorraadbeeld \\
+\hline
+Zoektijd servicedossier & 5--10 min & 1--2 min & Centrale historiek per klant/toestel \\
+\hline
+Service naar facturatie & 20--30 min & 10--15 min & Arbeid en onderdelen sneller factureerbaar \\
+\hline
+Onderdelenregistratie bij herstelling & Manueel & Gekoppeld aan voorraadmutatie & Minder risico op vergeten onderdelen \\
+\hline
+Correctiemomenten per 10 factuurflows & 2--3 & 0--1 & Minder foutgevoelige overname \\
+\hline
+Peppol-controlepunten & Verspreid / manueel & Centraal controleerbaar & Betere compliancevoorbereiding \\
+\hline
+\end{tabular}
+\end{table}
+
+De gedetailleerde vergelijking toont dat de verwachte efficiëntiewinst niet voortkomt uit één afzonderlijke automatisatie, maar uit de combinatie van centrale stamdata, automatische documentkoppeling en geïntegreerde voorraadregistratie. Vooral processen waarbij informatie in de AS-IS situatie meerdere keren opnieuw gebruikt of gecontroleerd moest worden, profiteren van de standaard Odoo-flow.
+
+\section{Vergelijking tussen AS-IS en TO-BE situatie}
+\label{sec:asis-tobe}
+
+Op basis van de uitgewerkte scenario’s werd een vergelijking gemaakt tussen de huidige situatie en de voorgestelde TO-BE situatie binnen Odoo.
+
+\subsection{Verkoop- en facturatieproces}
+
+In de huidige situatie bestaat het verkoopproces uit meerdere afzonderlijke stappen waarbij gegevens manueel moeten worden opgezocht, gecontroleerd en opnieuw ingevoerd.
+
+Binnen de TO-BE situatie worden offertes, verkooporders, leveringen en facturen automatisch aan elkaar gekoppeld binnen dezelfde ERP-omgeving.
+
+Tabel~\ref{tab:salesvergelijking} toont de vergelijking tussen beide situaties.
+
+\begin{table}[H]
+\centering
+\caption{Vergelijking verkoop- en facturatieproces}
+\label{tab:salesvergelijking}
+\begin{tabular}{|p{5cm}|p{3cm}|p{3cm}|}
+\hline
+\textbf{Indicator} & \textbf{AS-IS} & \textbf{TO-BE} \\
+\hline
+Aantal manuele stappen & 8 & 4 \\
+\hline
+Gemiddelde doorlooptijd & 15--20 minuten & 5--8 minuten \\
+\hline
+Correctiemomenten per 10 factuurflows & 2--3 & 0--1 \\
+\hline
+Documentkoppeling & Beperkt & Volledig geïntegreerd \\
+\hline
+Dubbele gegevensinvoer & Frequent & Beperkt \\
+\hline
+\end{tabular}
+\end{table}
+
+De resultaten tonen aan dat vooral de automatische koppeling tussen offerte, verkooporder en factuur een belangrijke impact heeft op de efficiëntie van het proces. In de oorspronkelijke situatie moesten klantgegevens, productinformatie en factuurgegevens op meerdere momenten opnieuw worden opgezocht of ingevoerd. Binnen de TO-BE situatie worden deze gegevens hergebruikt vanuit centrale stamdata.
+
+Daarnaast vermindert de centrale beschikbaarheid van klant- en productgegevens het risico op foutieve of inconsistente informatie. Hierdoor daalt niet enkel de verwerkingstijd, maar ook de kans op correcties achteraf.
+
+\subsection{Voorraadbeheer}
+
+Binnen de oorspronkelijke situatie werden voorraadwijzigingen vaak pas op het einde van de werkdag administratief verwerkt. Hierdoor ontstonden tijdelijke verschillen tussen administratieve en werkelijke voorraad.
+
+In de TO-BE situatie worden voorraadbewegingen automatisch gekoppeld aan verkoop-, aankoop- en serviceprocessen.
+
+\begin{table}[H]
+\centering
+\caption{Vergelijking voorraadbeheer}
+\label{tab:voorraadvergelijking}
+\begin{tabular}{|p{5cm}|p{3cm}|p{3cm}|}
+\hline
+\textbf{Indicator} & \textbf{AS-IS} & \textbf{TO-BE} \\
+\hline
+Real-time voorraadbeeld & Nee & Ja \\
+\hline
+Automatische stockmutaties & Nee & Ja \\
+\hline
+Moment voorraadupdate & Einde werkdag & Bij validatie van transactie \\
+\hline
+Risico op voorraadverschillen & Hoog & Beperkt \\
+\hline
+Koppeling met verkoop & Beperkt & Geïntegreerd \\
+\hline
+Koppeling met herstellingen & Manueel & Automatisch \\
+\hline
+\end{tabular}
+\end{table}
+
+De automatische verwerking van stockmutaties zorgt voor een actueler voorraadbeeld en verlaagt het risico op foutieve voorraadinschattingen. Dit is vooral relevant voor onderdelen die gebruikt worden bij herstellingen, omdat een laattijdige registratie rechtstreeks kan leiden tot vertragingen of verkeerde bestellingen.
+
+\subsection{Service- en herstelprocessen}
+
+Binnen de oorspronkelijke situatie werd service-informatie verspreid bijgehouden via e-mails, facturen en manuele notities.
+
+De TO-BE situatie laat toe om klantgegevens, toestellen, onderdelen en uitgevoerde werken centraal te koppelen binnen één ERP-omgeving.
+
+\begin{table}[H]
+\centering
+\caption{Vergelijking service- en herstelprocessen}
+\label{tab:servicevergelijking}
+\begin{tabular}{|p{5cm}|p{3cm}|p{3cm}|}
+\hline
+\textbf{Indicator} & \textbf{AS-IS} & \textbf{TO-BE} \\
+\hline
+Centrale historiek & Beperkt & Beschikbaar \\
+\hline
+Traceerbaarheid onderdelen & Manueel & Automatisch \\
+\hline
+Koppeling met facturatie & Beperkt & Geïntegreerd \\
+\hline
+Opvolging service-interventies & Verspreid & Centraal \\
+\hline
+Zoektijd historiek & 5--10 minuten & 1--2 minuten \\
+\hline
+Service naar facturatie & 20--30 minuten & 10--15 minuten \\
+\hline
+\end{tabular}
+\end{table}
+
+De integratie van service- en voorraadprocessen verlaagt het risico op vergeten onderdelen en onvolledige facturatie. Bovendien maakt centrale historiek het eenvoudiger om terugkerende problemen bij een toestel of klant op te volgen.
+
+\section{Evaluatie van procesverbeteringen}
+\label{sec:procesverbeteringen}
+
+Op basis van de uitgewerkte scenario’s kan worden vastgesteld dat de voorgestelde ERP-implementatie verschillende operationele verbeteringen oplevert.
+
+\subsection{Reductie van manuele handelingen}
+
+Een van de belangrijkste verbeteringen is de reductie van manuele gegevensinvoer. Door klantgegevens, producten en documenten centraal te beheren, moeten gegevens minder vaak opnieuw worden ingevoerd of gecontroleerd.
+
+Binnen de scenario’s werd vastgesteld dat het aantal manuele stappen binnen de standaard verkoopflow met ongeveer 50\% kon worden verminderd. Dit resultaat ligt boven de vooropgestelde doelstelling van 20--30\% reductie in manuele handelingen.
+
+De reductie komt vooral voort uit:
+\begin{itemize}
+    \item hergebruik van klantgegevens;
+    \item hergebruik van product- en prijsinformatie;
+    \item automatische omzetting van offerte naar verkooporder;
+    \item automatische koppeling tussen verkooporder en factuur;
+    \item geïntegreerde documenthistoriek.
+\end{itemize}
+
+De reductie betekent niet dat menselijke controle volledig verdwijnt. In een KMO-context blijft controle door de gebruiker belangrijk, bijvoorbeeld bij prijsafspraken, uitzonderlijke servicekosten of onvolledige klantgegevens. De winst ligt vooral in het vermijden van herhaald overtypen en het beperken van administratieve tussenstappen.
+
+\subsection{Verbeterde documenttraceerbaarheid}
+
+Binnen de TO-BE situatie worden offertes, verkooporders, leveringen, facturen en voorraadbewegingen automatisch aan elkaar gekoppeld.
+
+Hierdoor wordt het eenvoudiger om:
+\begin{itemize}
+    \item openstaande processen op te volgen;
+    \item historiek te raadplegen;
+    \item fouten sneller te identificeren;
+    \item documenten te reconstrueren.
+\end{itemize}
+
+Deze verbeterde traceerbaarheid is vooral relevant binnen servicegerichte processen waarbij meerdere interventies en onderdelen gekoppeld zijn aan dezelfde klant of hetzelfde toestel.
+
+\subsection{Snellere facturatie}
+
+De automatische omzetting van verkooporders naar facturen vermindert de administratieve verwerkingstijd aanzienlijk. Waar het opstellen en verzenden van een factuur in de AS-IS situatie gemiddeld 15 tot 20 minuten in beslag nam, kon dit in de TO-BE situatie worden teruggebracht tot ongeveer 5 tot 8 minuten.
+
+Daarnaast verlaagt de integratie van servicegegevens en onderdelen het risico op ontbrekende factuurlijnen of vergeten prestaties. Dit is vooral belangrijk bij herstellingen, waar facturatie vaak bestaat uit een combinatie van arbeid, onderdelen en eventuele verplaatsingskosten.
+
+Bij servicefacturatie is de winst iets beperkter dan bij standaardverkoop, omdat diagnose, arbeidsregistratie en onderdelenkeuze nog steeds inhoudelijke beoordeling vragen. Toch kan de doorlooptijd ook hier dalen doordat onderdelen en prestaties minder vaak manueel moeten worden overgenomen naar een afzonderlijk facturatiedocument.
+
+\subsection{Betere voorraadcontrole}
+
+Doordat voorraadbewegingen automatisch gekoppeld worden aan transacties, ontstaat een actueler voorraadbeeld.
+
+Hierdoor wordt:
+\begin{itemize}
+    \item het risico op stockverschillen beperkt;
+    \item onderdelenverbruik beter geregistreerd;
+    \item de afhankelijkheid van manuele controle verminderd;
+    \item toekomstige aankoopbehoeften sneller zichtbaar.
+\end{itemize}
+
+Voor Hanuman BV is dit vooral relevant omdat onderdelenverbruik rechtstreeks samenhangt met service- en herstelactiviteiten. Een correct voorraadbeeld verkleint het risico dat herstellingen vertraging oplopen door ontbrekende onderdelen.
+
+\section{Evaluatie van Peppol-readiness}
+\label{sec:peppol-evaluatie}
+
+Een belangrijk onderdeel van deze bachelorproef is de voorbereiding op gestructureerde elektronische facturatie via Peppol.
+
+Tijdens de evaluatie werd nagegaan of de voorgestelde configuratie voldoende voorbereid is om elektronische facturen correct te kunnen genereren.
+
+Daarbij werd gecontroleerd of:
+\begin{itemize}
+    \item btw-nummers correct geregistreerd zijn;
+    \item verplichte adresgegevens aanwezig zijn;
+    \item bankgegevens correct geconfigureerd zijn;
+    \item factuurstructuren voldoende gestandaardiseerd zijn;
+    \item stamdata centraal beheerd wordt;
+    \item btw-tarieven en fiscale posities correct zijn ingesteld;
+    \item de onderneming technisch voorbereid is op aansluiting via een Peppol access point.
+\end{itemize}
+
+Tabel~\ref{tab:peppol-readiness} geeft een overzicht van de Peppol-readinesscontrole.
+
+\begin{table}[H]
+\centering
+\caption{Peppol-readinesscontrole}
+\label{tab:peppol-readiness}
+\begin{tabular}{|p{5cm}|p{3cm}|p{5cm}|}
+\hline
+\textbf{Controlepunt} & \textbf{Status} & \textbf{Opmerking} \\
+\hline
+Btw-nummer onderneming & In orde & Correct geregistreerd in bedrijfsgegevens \\
+\hline
+Btw-nummers klanten & Grotendeels in orde & Enkele klantfiches vereisen controle \\
+\hline
+Adresgegevens klanten & In orde & Verplichte velden aanwezig \\
+\hline
+Bankgegevens onderneming & In orde & Nodig voor factuurvermelding \\
+\hline
+Btw-tarieven en fiscale positie & In orde & Nodig voor correcte fiscale verwerking \\
+\hline
+Factuurstructuur & In orde & Gebaseerd op standaard Odoo-facturatieflow \\
+\hline
+Centrale stamdata & In orde & Klant- en productgegevens centraal beheerd \\
+\hline
+Peppol access point & Niet volledig getest & Buiten scope van productie-integratie \\
+\hline
+\end{tabular}
+\end{table}
+
+Uit de controle blijkt dat zeven van de acht onderzochte Peppol-readinesspunten in orde of grotendeels in orde zijn. Het enige onderdeel dat niet volledig gevalideerd werd, is de effectieve productie-integratie met een Peppol access point. Dit valt buiten de scope van de Proof of Concept, maar vormt wel een noodzakelijke stap bij een latere productie-uitrol.
+
+Op basis van deze controle werd vastgesteld dat de voorgestelde configuratie grotendeels voldoet aan de vereisten voor toekomstige Peppol-integratie.
+
+De centrale registratie van klant- en bedrijfsgegevens vermindert het risico op validatiefouten aanzienlijk in vergelijking met de oorspronkelijke situatie.
+
+Hoewel de Proof of Concept geen volledige productie-integratie met een Peppol access point omvat, toont de evaluatie aan dat de onderneming technisch beter voorbereid is op toekomstige e-invoicingverplichtingen.
+
+\section{Beperkingen van het onderzoek}
+\label{sec:beperkingen}
+
+Hoewel de resultaten van de evaluatie positief zijn, kent dit onderzoek verschillende beperkingen.
+
+Ten eerste werd gewerkt binnen een gecontroleerde Proof of Concept-omgeving en niet binnen een volledige productieomgeving. Hierdoor konden niet alle praktische omstandigheden van een reële implementatie worden nagebootst.
+
+Daarnaast is de evaluatie gedeeltelijk gebaseerd op scenario-gebaseerde simulaties en observaties tijdens de AS-IS analyse. Omdat historische logdata beperkt beschikbaar was, konden bepaalde KPI’s slechts indicatief worden geëvalueerd.
+
+Ook langdurige gebruikersacceptatie en organisatorische veranderingen konden binnen de beperkte onderzoeksperiode niet volledig worden onderzocht.
+
+Verder werd bewust gekozen om zoveel mogelijk gebruik te maken van standaardfunctionaliteiten binnen Odoo. Hierdoor werden geavanceerde maatwerkfunctionaliteiten buiten scope gehouden.
+
+Tot slot zijn de resultaten voornamelijk toepasbaar op kleine servicegerichte ondernemingen met gelijkaardige processen en beperkte organisatorische complexiteit.
+
+\section{Samenvattende evaluatie}
+\label{sec:samenvattende-evaluatie}
+
+De evaluatie toont aan dat een gefaseerde implementatie van Odoo een duidelijke meerwaarde kan bieden voor een servicegerichte Belgische KMO zoals Hanuman BV.
+
+De voorgestelde ERP-omgeving laat toe om:
+\begin{itemize}
+    \item manuele administratie te verminderen;
+    \item documenttraceerbaarheid te verbeteren;
+    \item voorraadbeheer beter te integreren;
+    \item serviceprocessen centraler op te volgen;
+    \item voorbereiding op Peppol-compliance te versterken.
+\end{itemize}
+
+Daarnaast toont de evaluatie aan dat een gefaseerde aanpak bijzonder geschikt is binnen een KMO-context, omdat deze implementatierisico’s beperkt en gebruikers toelaat om stapsgewijs vertrouwd te raken met de nieuwe processen.
+
+De resultaten ondersteunen daarmee de centrale onderzoeksvraag van deze bachelorproef en vormen de basis voor de conclusies in het volgende hoofdstuk.
