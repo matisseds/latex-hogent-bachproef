@@ -144,6 +144,24 @@ De evaluatie focust op het aantal manuele stappen, de doorlooptijd per proces, d
     \item Overzicht van aandachtspunten voor Peppol-compliance
 \end{itemize}
 
+\section{Reproduceerbaarheid van het onderzoek}
+\label{sec:reproduceerbaarheid}
+
+Om de reproduceerbaarheid van het onderzoek te versterken, werden de gebruikte methoden, testdata, scenario’s en evaluatiecriteria expliciet afgebakend. Hierdoor kan een gelijkaardige Odoo-testopstelling opnieuw worden opgebouwd binnen een vergelijkbare servicegerichte KMO-context.
+
+De reproduceerbaarheid steunt op vier elementen.
+
+\begin{itemize}
+    \item \textbf{Afbakening van modules.} De Proof of Concept vertrekt vanuit standaard Odoo-functionaliteiten en gebruikt de modules Contacts, Sales, Invoicing, Inventory, Purchase en Repair.
+    \item \textbf{Representatieve stamdata.} De testomgeving wordt opgebouwd met representatieve klant-, leveranciers-, product- en onderdelengegevens, aangevuld met btw-instellingen en voorbeeldfacturen.
+    \item \textbf{Vaste testscenario’s.} De scenario’s omvatten een verkoopflow van offerte tot factuur, voorraadmutaties, service- en reparatieprocessen en een Peppol-readinesscontrole.
+    \item \textbf{Consistente KPI-meting.} De evaluatie gebeurt aan de hand van vaste KPI’s, waaronder het aantal manuele stappen, de doorlooptijd, correctiemomenten, documenttraceerbaarheid, voorraadactualiteit en Peppol-readiness.
+\end{itemize}
+
+Daarnaast werd bewust gekozen om geen maatwerkontwikkeling op te nemen in de Proof of Concept. De testopstelling blijft daardoor reproduceerbaar in een standaard Odoo-omgeving en is eenvoudiger vergelijkbaar met andere KMO-cases.
+
+De gebruikte AS-IS baseline wordt afgeleid uit observaties, shadowing en documentanalyse. De TO-BE waarden worden geëvalueerd op basis van scenario-gebaseerde tests binnen de Odoo-omgeving. Door deze aanpak expliciet te documenteren, kunnen dezelfde stappen later opnieuw worden uitgevoerd of aangepast aan een gelijkaardige onderneming.
+
 \section{Kwaliteitsbewaking en beperkingen}
 
 De betrouwbaarheid van het onderzoek wordt verhoogd door triangulatie: shadowing, observaties, stakeholderinput en documentanalyse worden gecombineerd. De evaluatie is gedeeltelijk gebaseerd op gesimuleerde scenario’s, aangezien historische logdata in de oorspronkelijke situatie beperkt beschikbaar is.
@@ -154,4 +172,4 @@ De resultaten zijn voornamelijk toepasbaar op gelijkaardige servicegerichte KMO�
 
 \section{Samenvatting}
 
-De methodologie bestaat uit een gefaseerde aanpak met analyse, ontwerp, proof-of-concept en evaluatie. Dit hoofdstuk beschreef het plan van aanpak en de gekozen onderzoeksmethoden. In de volgende hoofdstukken worden de uitvoering, testscenario’s en evaluatie van deze fasen inhoudelijk besproken. De uiteindelijke beantwoording van de onderzoeksvragen volgt in de conclusie.
+De methodologie bestaat uit een gefaseerde aanpak met analyse, ontwerp, proof-of-concept en evaluatie. De reproduceerbaarheid wordt versterkt door de expliciete afbakening van modules, testdata, scenario’s en KPI’s. In de volgende hoofdstukken worden de uitvoering, testscenario’s en evaluatie van deze fasen inhoudelijk besproken. De uiteindelijke beantwoording van de onderzoeksvragen volgt in de conclusie.
