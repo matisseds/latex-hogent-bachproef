@@ -5,4 +5,824 @@
 \chapter{Proof of Concept}
 \label{ch:poc}
 
-Dit hoofdstuk wordt verder uitgewerkt nadat de Odoo Proof of Concept werd uitgevoerd. In dit hoofdstuk worden de configuratie van de Odoo-omgeving, de uitgevoerde testscenario’s, screenshots en validatieresultaten besproken.
+Dit hoofdstuk beschrijft de uitvoering van de Proof of Concept (PoC) in Odoo. De PoC vormt de praktische validatie van het migratiekader dat in Hoofdstuk~4 werd voorgesteld. Waar de vorige hoofdstukken de huidige werking, knelpunten, requirements en gewenste TO-BE-processen analyseerden, toont dit hoofdstuk hoe deze processen in een gecontroleerde Odoo-testomgeving uitgevoerd kunnen worden.
+
+De PoC werd uitgewerkt rond Hanuman BV, een Belgische KMO die professionele koffiemachines verkoopt, installeert, onderhoudt en herstelt. De testomgeving werd opgebouwd met realistische klanten, leveranciers, producten, diensten, voorraadgegevens, verkooporders, aankooporders, repair orders, facturen, serienummers, equipment records en Peppol-gerelateerde stamdata.
+
+Het doel van deze PoC is niet om een volledige productie-implementatie te simuleren. De focus ligt op functionele validatie: nagaan of Odoo de ontworpen processen voldoende ondersteunt en of de belangrijkste knelpunten uit de AS-IS-analyse aangepakt kunnen worden. De PoC toont dus aan wat binnen de testscenario's mogelijk is, maar vervangt geen volledige livegang met historische migratie, gebruikersopleiding, change management en productie-integraties.
+
+De PoC bestaat uit zes scenario's:
+
+\begin{itemize}
+    \item Sales-to-Cash voor Cafe Central BV;
+    \item aankoop en voorraadupdate via BrewParts Europe;
+    \item repair flow voor Hotel Aroma BV;
+    \item onderhoudsdienst en fysieke onderdelen op één factuur voor OfficeBeans NV;
+    \item serienummertracking en preventief onderhoud voor RoastLab BV;
+    \item Peppol-readiness en e-invoicingcontrole.
+\end{itemize}
+
+Deze scenario's dekken samen de belangrijkste functionele requirements af: centrale stamdata, verkoop en facturatie, voorraadactualiteit, service- en repairprocessen, after-sales traceerbaarheid en voorbereiding op B2B-e-invoicing.
+
+\section{Doel en afbakening van de PoC}
+\label{sec:poc-doel}
+
+De PoC heeft als doel om na te gaan of Odoo de kernprocessen van Hanuman BV op een geïntegreerde manier kan ondersteunen. De nadruk ligt op procesintegratie, traceerbaarheid en het verminderen van dubbele gegevensinvoer.
+
+Concreet werd getest of Odoo toelaat om:
+
+\begin{itemize}
+    \item klant-, leveranciers- en productgegevens centraal te beheren;
+    \item verkooporders om te zetten naar leveringen en facturen;
+    \item fysieke producten en diensten verschillend maar correct te verwerken;
+    \item aankooporders automatisch te koppelen aan ontvangsten en voorraad;
+    \item repair orders te gebruiken voor herstellingen met onderdelenverbruik;
+    \item service en fysieke onderdelen samen te factureren;
+    \item verkochte machines via serienummers en equipment records op te volgen;
+    \item preventief onderhoud te plannen;
+    \item stamdata en facturen voor te bereiden op Peppol/e-invoicing.
+\end{itemize}
+
+De PoC werd bewust uitgevoerd met standaard Odoo-functionaliteiten. Er werd geen maatwerkontwikkeling toegevoegd. Dit is belangrijk omdat de bachelorproef een stapsgewijze en haalbare migratie naar open-source ERP onderzoekt voor KMO's. Door standaardmodules te gebruiken, blijft de voorgestelde aanpak reproduceerbaar en realistischer voor kleinere ondernemingen met beperkte IT-capaciteit.
+
+De volgende zaken vallen buiten de scope van de PoC:
+
+\begin{itemize}
+    \item een volledige productie-livegang;
+    \item migratie van historische data;
+    \item koppeling met echte banktransacties;
+    \item langdurige performantie- of gebruikerstesten;
+    \item effectieve productie-uitwisseling via een Peppol Access Point;
+    \item maatwerkontwikkeling of externe integraties.
+\end{itemize}
+
+\section{Odoo-testomgeving}
+\label{sec:poc-omgeving}
+
+De PoC werd uitgevoerd in een educatieve Odoo Enterprise-testomgeving. Binnen deze omgeving werd Hanuman BV geconfigureerd als Belgische onderneming. De omgeving bevatte de nodige basisgegevens voor verkoop, aankoop, voorraadbeheer, boekhouding, repair, maintenance en e-invoicing.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/algemeen/dashboard.png}
+    \caption{Odoo-dashboard van de testomgeving}
+    \label{fig:poc-dashboard}
+\end{figure}
+
+De gebruikte Odoo-modules sluiten aan bij de processen die in deze bachelorproef onderzocht worden. De belangrijkste modules zijn Sales, Accounting, Inventory, Purchase, Repair, Maintenance en Contacts.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/algemeen/modules.png}
+    \caption{Overzicht van de gebruikte Odoo-modules}
+    \label{fig:poc-modules}
+\end{figure}
+
+De bedrijfsfiche van Hanuman BV bevat de noodzakelijke basisgegevens voor facturatie en e-invoicing, waaronder naam, adres, land, btw-nummer, valuta en contactgegevens.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/algemeen/companyinfo.png}
+    \caption{Bedrijfsgegevens van Hanuman BV in Odoo}
+    \label{fig:poc-company-info}
+\end{figure}
+
+Daarnaast werd ook de beschikbaarheid van Peppol elektronische facturatie in de instellingen gecontroleerd. Voor de PoC werd Peppol in demomodus gebruikt, zonder productie-uitwisseling te claimen.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/algemeen/activeerpeppol.png}
+    \caption{Peppol elektronische facturatie in demomodus}
+    \label{fig:poc-peppol-demo}
+\end{figure}
+
+\section{Stamdata}
+\label{sec:poc-stamdata}
+
+Een ERP-implementatie staat of valt met de kwaliteit van de stamdata. Daarom werd de PoC opgebouwd rond centrale klant-, leveranciers-, product- en voorraadgegevens. Deze gegevens worden in de scenario's hergebruikt doorheen verkoop, aankoop, voorraadbeheer, repair, facturatie en maintenance.
+
+\subsection{Klanten en leveranciers}
+
+De testomgeving bevat verschillende B2B-klanten die elk in een ander scenario gebruikt worden:
+
+\begin{itemize}
+    \item Cafe Central BV voor Sales-to-Cash en Peppol-readiness;
+    \item Hotel Aroma BV voor repair en servicefacturatie;
+    \item OfficeBeans NV voor onderhoud en onderdelen op één factuur;
+    \item RoastLab BV voor serienummertracking en preventief onderhoud.
+\end{itemize}
+
+Daarnaast werd BrewParts Europe gebruikt als leverancier voor reserveonderdelen.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/algemeen/contacten.png}
+    \caption{Overzicht van de aangemaakte contacten}
+    \label{fig:poc-contacten}
+\end{figure}
+
+\subsection{Producten, diensten en voorraad}
+
+De PoC maakt bewust onderscheid tussen fysieke producten en diensten. Fysieke producten veroorzaken voorraadbewegingen, terwijl diensten enkel gefactureerd worden. Dit onderscheid is belangrijk voor Hanuman BV omdat de onderneming zowel producten verkoopt als installatie, onderhoud en herstellingen uitvoert.
+
+Voorbeelden van fysieke producten in de PoC zijn:
+
+\begin{itemize}
+    \item Espresso Pro X;
+    \item Office Brew 200;
+    \item Waterfilter cartridge;
+    \item Pomp 15 bar;
+    \item O-ring set;
+    \item Grinder burr set;
+    \item Reinigingstabletten.
+\end{itemize}
+
+Voorbeelden van diensten zijn:
+
+\begin{itemize}
+    \item Installatie op locatie;
+    \item Onderhoud standaard;
+    \item Herstelling uur.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/algemeen/aanbod.png}
+    \caption{Overzicht van producten en diensten in de Odoo-testomgeving}
+    \label{fig:poc-aanbod}
+\end{figure}
+
+De voorraadmodule werd gebruikt om voorraadniveaus op te volgen en te valideren na aankoop, verkoop en repair. Hierdoor kan de PoC aantonen dat voorraadmutaties automatisch verwerkt worden binnen Odoo.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/algemeen/voorraad.png}
+    \caption{Voorraadoverzicht in de Odoo-testomgeving}
+    \label{fig:poc-voorraad}
+\end{figure}
+
+\section{Scenario 1: Sales-to-Cash}
+\label{sec:poc-s1}
+
+Het eerste scenario valideert de volledige Sales-to-Cash-flow voor Cafe Central BV. Dit scenario is het kernvoorbeeld voor procesintegratie, omdat het aantoont hoe een offerte evolueert naar een verkooporder, levering, factuur en betalingsopvolging.
+
+\subsection{Uitvoering}
+
+Voor Cafe Central BV werd verkooporder S00001 aangemaakt. De order bevatte drie lijnen:
+
+\begin{itemize}
+    \item Espresso Pro X, 1 stuk;
+    \item Waterfilter cartridge, 4 stuks;
+    \item Installatie op locatie, 1 stuk.
+\end{itemize}
+
+De totale waarde bedroeg €2.999,00 exclusief btw en €3.628,79 inclusief 21\% btw.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case1/1.png}
+    \caption{Offerte S00001 voor Cafe Central BV}
+    \label{fig:poc-s1-offerte}
+\end{figure}
+
+Na bevestiging werd de offerte omgezet naar een verkooporder. Vanuit deze verkooporder werd automatisch een levering aangemaakt.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case1/2.png}
+    \caption{Bevestigde verkooporder S00001 voor Cafe Central BV}
+    \label{fig:poc-s1-salesorder}
+\end{figure}
+
+De levering WH/OUT/00001 bevatte enkel de fysieke producten: Espresso Pro X en Waterfilter cartridge. De dienst Installatie op locatie werd niet opgenomen in de levering. Dit is belangrijk, omdat het bevestigt dat Odoo diensten en voorraadproducten correct verschillend behandelt.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case1/3.png}
+    \caption{Levering WH/OUT/00001 vóór validatie}
+    \label{fig:poc-s1-delivery-before}
+\end{figure}
+
+Na validatie kreeg de levering de status Gereed.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case1/4.png}
+    \caption{Gevalideerde levering WH/OUT/00001}
+    \label{fig:poc-s1-delivery-done}
+\end{figure}
+
+Vervolgens werd vanuit de verkooporder factuur INV/2026/00001 aangemaakt. De factuur bevatte alle orderlijnen, inclusief de dienst Installatie op locatie.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case1/5.png}
+    \caption{Conceptfactuur voor verkooporder S00001}
+    \label{fig:poc-s1-invoice-draft}
+\end{figure}
+
+De factuur werd daarna geboekt. Odoo genereerde hierbij een factuurnummer en gestructureerde betaalreferentie.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case1/6.png}
+    \caption{Geboekte factuur INV/2026/00001}
+    \label{fig:poc-s1-invoice-posted}
+\end{figure}
+
+De betalingsstatus werd geregistreerd als In betaling. Hiermee wordt aangetoond dat Odoo ook de opvolging van openstaande bedragen ondersteunt.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case1/7.png}
+    \caption{Betalingsstatus van INV/2026/00001}
+    \label{fig:poc-s1-payment-status}
+\end{figure}
+
+Tot slot werd de traceerbaarheid gecontroleerd vanuit verkooporder S00001. De smart buttons tonen dat de verkooporder gekoppeld is aan één levering en één factuur. Daarnaast tonen de orderregels welke aantallen geleverd en gefactureerd zijn.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case1/8.png}
+    \caption{Traceerbaarheid van verkooporder S00001 naar levering en factuur}
+    \label{fig:poc-s1-traceability}
+\end{figure}
+
+\subsection{Validatie}
+
+Scenario 1 toont aan dat Odoo de volledige verkoopketen functioneel ondersteunt. Dezelfde klant- en productgegevens worden hergebruikt doorheen offerte, verkooporder, levering en factuur. Hierdoor wordt dubbele gegevensinvoer vermeden binnen het scenario. De documentketen is bovendien traceerbaar via smart buttons en gekoppelde statussen.
+
+\begin{table}[H]
+    \centering
+    \caption{Validatie van Scenario 1: Sales-to-Cash}
+    \label{tab:poc-s1}
+    \begin{tabular}{p{0.42\textwidth}p{0.22\textwidth}p{0.26\textwidth}}
+        \toprule
+        \textbf{Controlepunt} & \textbf{Resultaat} & \textbf{Bewijs} \\
+        \midrule
+        Offerte aangemaakt & Geslaagd & S00001 \\
+        Offerte bevestigd als verkooporder & Geslaagd & Status Verkooporder \\
+        Levering aangemaakt & Geslaagd & WH/OUT/00001 \\
+        Dienst niet in voorraadlevering & Geslaagd & Installatie niet in picking \\
+        Factuur aangemaakt en geboekt & Geslaagd & INV/2026/00001 \\
+        Betalingsstatus opgevolgd & Geslaagd & In betaling \\
+        Traceerbaarheid aanwezig & Geslaagd & Smart buttons levering en factuur \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{Scenario 2: Aankoop en voorraadupdate}
+\label{sec:poc-s2}
+
+Het tweede scenario valideert de aankoopflow en de automatische voorraadupdate. Dit scenario sluit aan bij het knelpunt dat voorraad in de AS-IS-situatie niet altijd actueel of centraal beschikbaar was.
+
+\subsection{Uitvoering}
+
+Voor de aankoop van onderdelen werd een inkooporder aangemaakt bij BrewParts Europe. De aankoop bevatte:
+
+\begin{itemize}
+    \item Pomp 15 bar, 5 stuks;
+    \item O-ring set, 10 stuks;
+    \item Grinder burr set, 4 stuks.
+\end{itemize}
+
+Voor de aankoop bedroeg de voorraad van Pomp 15 bar 3 stuks.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case2/1.png}
+    \caption{Voorraad van Pomp 15 bar vóór aankoop}
+    \label{fig:poc-s2-stock-before}
+\end{figure}
+
+De inkoopofferte P00001 werd aangemaakt voor BrewParts Europe.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case2/2.png}
+    \caption{Inkoopofferte P00001 bij BrewParts Europe}
+    \label{fig:poc-s2-rfq}
+\end{figure}
+
+Na bevestiging werd P00001 een inkooporder. Odoo maakte automatisch een ontvangst aan.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case2/3.png}
+    \caption{Bevestigde inkooporder P00001}
+    \label{fig:poc-s2-po}
+\end{figure}
+
+De ontvangst WH/IN/00001 bevatte de drie bestelde productlijnen en stond vóór validatie op beschikbaar.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case2/4.png}
+    \caption{Ontvangst WH/IN/00001 vóór validatie}
+    \label{fig:poc-s2-receipt-before}
+\end{figure}
+
+Na validatie kreeg de ontvangst de status Gereed. Hiermee werden de aangekochte producten in voorraad opgenomen.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case2/5.png}
+    \caption{Gevalideerde ontvangst WH/IN/00001}
+    \label{fig:poc-s2-receipt-done}
+\end{figure}
+
+Na de ontvangst steeg de voorraad van Pomp 15 bar van 3 naar 8 stuks. Deze stijging komt overeen met de aankoop van 5 stuks.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case2/6.png}
+    \caption{Voorraad van Pomp 15 bar na ontvangst}
+    \label{fig:poc-s2-stock-after}
+\end{figure}
+
+\subsection{Validatie}
+
+Scenario 2 toont aan dat Odoo aankoop en voorraadbeheer geïntegreerd verwerkt. Zodra de ontvangst gevalideerd wordt, past Odoo de voorraad automatisch aan. Dit vermindert het risico op verouderde of foutieve voorraadgegevens.
+
+\begin{table}[H]
+    \centering
+    \caption{Validatie van Scenario 2: aankoop en voorraad}
+    \label{tab:poc-s2}
+    \begin{tabular}{p{0.42\textwidth}p{0.22\textwidth}p{0.26\textwidth}}
+        \toprule
+        \textbf{Controlepunt} & \textbf{Resultaat} & \textbf{Bewijs} \\
+        \midrule
+        Inkooporder aangemaakt & Geslaagd & P00001 \\
+        Ontvangst aangemaakt & Geslaagd & WH/IN/00001 \\
+        Ontvangst gevalideerd & Geslaagd & Status Gereed \\
+        Voorraad automatisch verhoogd & Geslaagd & Pomp 15 bar: 3 naar 8 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{Scenario 3: Repair flow en servicefacturatie}
+\label{sec:poc-s3}
+
+Het derde scenario valideert de repair flow voor Hotel Aroma BV. Dit scenario is belangrijk omdat Hanuman BV naast verkoop ook herstellingen uitvoert. Een ERP-systeem moet daarom niet alleen commerciële orders ondersteunen, maar ook serviceprocessen, onderdelenverbruik en facturatie.
+
+\subsection{Uitvoering}
+
+Voor Hotel Aroma BV werd repair order WH/RO/00001 aangemaakt voor een Office Brew 200. De klacht werd geregistreerd als: ``Machine bouwt onvoldoende druk op.''
+
+Voor de repair werden volgende lijnen gebruikt:
+
+\begin{itemize}
+    \item Pomp 15 bar, 1 stuk;
+    \item O-ring set, 2 stuks;
+    \item Herstelling uur, 2 eenheden.
+\end{itemize}
+
+Voor de herstelling bedroeg de voorraad van Pomp 15 bar 8 stuks.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case3/1.png}
+    \caption{Voorraad van Pomp 15 bar vóór repair}
+    \label{fig:poc-s3-stock-before}
+\end{figure}
+
+De repair order werd aangemaakt met klant, te herstellen product en probleemomschrijving.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case3/3.png}
+    \caption{Repair order voor Hotel Aroma BV met probleemomschrijving}
+    \label{fig:poc-s3-draft}
+\end{figure}
+
+Daarna werden onderdelen en arbeid toegevoegd. Alle lijnen waren beschikbaar voor verwerking.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case3/4.png}
+    \caption{Onderdelen en arbeid toegevoegd aan repair order WH/RO/00001}
+    \label{fig:poc-s3-lines}
+\end{figure}
+
+De repair order werd bevestigd, gestart en afgerond. De status evolueerde naar Gerepareerd. Odoo registreerde hierbij ook een voorraadverplaatsing.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case3/5.png}
+    \caption{Repair order WH/RO/00001 in status Gerepareerd}
+    \label{fig:poc-s3-repaired}
+\end{figure}
+
+Na afronding van de repair daalde de voorraad van Pomp 15 bar van 8 naar 7 stuks. Dit bevestigt dat het onderdelenverbruik verwerkt werd in de voorraad.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case3/6.png}
+    \caption{Voorraad van Pomp 15 bar na repair}
+    \label{fig:poc-s3-stock-after}
+\end{figure}
+
+Vervolgens werd een factuur aangemaakt voor Hotel Aroma BV. De conceptfactuur bevatte de gebruikte onderdelen en arbeid.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case3/7.png}
+    \caption{Conceptfactuur voor de repair van Hotel Aroma BV}
+    \label{fig:poc-s3-invoice-draft}
+\end{figure}
+
+Factuur INV/2026/00002 werd daarna geboekt. Het totaalbedrag bedroeg €115,00 exclusief btw en €139,15 inclusief 21\% btw.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case3/8.png}
+    \caption{Geboekte repairfactuur INV/2026/00002}
+    \label{fig:poc-s3-invoice-posted}
+\end{figure}
+
+\subsection{Validatie}
+
+Scenario 3 toont aan dat Odoo repairprocessen kan ondersteunen van aanmaak tot facturatie. De repair order bevat klant, toestel, klacht, onderdelen, arbeid, statusovergangen en voorraadimpact. Hierdoor wordt service-informatie centraler en traceerbaarder dan in een werkwijze met losse documenten of manuele notities.
+
+\begin{table}[H]
+    \centering
+    \caption{Validatie van Scenario 3: repair flow}
+    \label{tab:poc-s3}
+    \begin{tabular}{p{0.42\textwidth}p{0.22\textwidth}p{0.26\textwidth}}
+        \toprule
+        \textbf{Controlepunt} & \textbf{Resultaat} & \textbf{Bewijs} \\
+        \midrule
+        Repair order aangemaakt & Geslaagd & WH/RO/00001 \\
+        Klacht geregistreerd & Geslaagd & Probleemomschrijving aanwezig \\
+        Onderdelen toegevoegd & Geslaagd & Pomp 15 bar en O-ring set \\
+        Repair afgerond & Geslaagd & Status Gerepareerd \\
+        Voorraadverbruik verwerkt & Geslaagd & Pomp 15 bar: 8 naar 7 \\
+        Factuur geboekt & Geslaagd & INV/2026/00002 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+De gebruikte testprijzen zijn illustratief. De focus ligt in dit scenario op procesvalidatie, onderdelenverbruik en traceerbaarheid, niet op commerciële prijszetting.
+
+\section{Scenario 4: Onderhoud en onderdelen op één factuur}
+\label{sec:poc-s4}
+
+Het vierde scenario valideert een gemengde verkooporder voor OfficeBeans NV. In dit scenario worden een onderhoudsdienst en fysieke producten gecombineerd. Dit sluit aan bij de praktijk van Hanuman BV, waar onderhoud vaak samen met verbruiksproducten of onderdelen wordt aangerekend.
+
+\subsection{Uitvoering}
+
+Voor OfficeBeans NV werd verkooporder S00003 aangemaakt met volgende lijnen:
+
+\begin{itemize}
+    \item Onderhoud standaard, 1 eenheid;
+    \item Waterfilter cartridge, 2 stuks;
+    \item Reinigingstabletten, 1 stuk.
+\end{itemize}
+
+De totale waarde bedroeg €214,00 exclusief btw en €258,94 inclusief 21\% btw.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case4/1.jpg}
+    \caption{Offerte S00003 voor OfficeBeans NV}
+    \label{fig:poc-s4-offerte}
+\end{figure}
+
+Na bevestiging werd de offerte omgezet naar een verkooporder. Odoo maakte automatisch één levering aan.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case4/2.jpg}
+    \caption{Bevestigde verkooporder S00003 voor OfficeBeans NV}
+    \label{fig:poc-s4-salesorder}
+\end{figure}
+
+De levering WH/OUT/00002 bevatte enkel de fysieke producten: Waterfilter cartridge en Reinigingstabletten. Het serviceproduct Onderhoud standaard stond niet in de levering.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case4/3.jpg}
+    \caption{Levering WH/OUT/00002 met enkel fysieke producten}
+    \label{fig:poc-s4-delivery-before}
+\end{figure}
+
+Na validatie kreeg de levering de status Gereed.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case4/4.jpg}
+    \caption{Gevalideerde levering WH/OUT/00002}
+    \label{fig:poc-s4-delivery-done}
+\end{figure}
+
+Daarna werd factuur INV/2026/00003 aangemaakt en geboekt. De factuur bevatte alle drie de lijnen: de onderhoudsdienst en de twee fysieke productlijnen.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case4/5.jpg}
+    \caption{Geboekte factuur INV/2026/00003 met dienst en fysieke producten}
+    \label{fig:poc-s4-invoice-posted}
+\end{figure}
+
+Na levering werd de voorraad van Waterfilter cartridge gecontroleerd. De voorraad daalde van 36 naar 34 stuks, wat overeenkomt met de levering van 2 stuks.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case4/6.jpg}
+    \caption{Voorraad van Waterfilter cartridge na levering}
+    \label{fig:poc-s4-stock-after}
+\end{figure}
+
+Tot slot werd de traceerbaarheid gecontroleerd vanuit verkooporder S00003. Hieruit blijkt dat Onderhoud standaard een gefactureerde dienst is zonder voorraadlevering, terwijl de fysieke producten zowel geleverd als gefactureerd werden.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case4/7.jpg}
+    \caption{Traceerbaarheid van S00003 met geleverde en gefactureerde aantallen}
+    \label{fig:poc-s4-traceability}
+\end{figure}
+
+\subsection{Validatie}
+
+Scenario 4 bevestigt dat Odoo correct omgaat met een gemengde verkooporder. Diensten worden niet via voorraad geleverd, maar kunnen wel samen met fysieke producten gefactureerd worden. Dit is belangrijk voor Hanuman BV omdat service en onderdelen in de praktijk vaak samen op één klantfactuur terechtkomen.
+
+\begin{table}[H]
+    \centering
+    \caption{Validatie van Scenario 4: dienst en onderdelen}
+    \label{tab:poc-s4}
+    \begin{tabular}{p{0.44\textwidth}p{0.20\textwidth}p{0.26\textwidth}}
+        \toprule
+        \textbf{Controlepunt} & \textbf{Resultaat} & \textbf{Bewijs} \\
+        \midrule
+        Gemengde order aangemaakt & Geslaagd & S00003 \\
+        Dienst niet in levering & Geslaagd & Onderhoud standaard niet in WH/OUT/00002 \\
+        Fysieke producten geleverd & Geslaagd & Waterfilter en Reinigingstabletten \\
+        Alle lijnen gefactureerd & Geslaagd & INV/2026/00003 \\
+        Voorraadupdate uitgevoerd & Geslaagd & Waterfilter: 36 naar 34 \\
+        Traceerbaarheid aanwezig & Geslaagd & Levering 1 en Facturen 1 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{Scenario 5: Serienummertracking en preventief onderhoud}
+\label{sec:poc-s5}
+
+Het vijfde scenario valideert after-sales traceerbaarheid. Voor Hanuman BV is dit relevant omdat verkochte machines later onderhouden of hersteld moeten worden. Door een toestel te koppelen aan een serienummer, klant en equipment record kan de servicehistoriek beter worden opgevolgd.
+
+\subsection{Uitvoering}
+
+Voor dit scenario werd het product Espresso Pro X gecontroleerd. Dit product is geconfigureerd met tracking op uniek serienummer.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case5/7.jpg}
+    \caption{Espresso Pro X met tracking op uniek serienummer}
+    \label{fig:poc-s5-product-config}
+\end{figure}
+
+Voor RoastLab BV werd verkooporder S00004 aangemaakt voor één Espresso Pro X. De verkoopwaarde bedroeg €2.495,00 exclusief btw en €3.018,95 inclusief 21\% btw.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case5/8.jpg}
+    \caption{Bevestigde verkooporder S00004 voor RoastLab BV}
+    \label{fig:poc-s5-salesorder}
+\end{figure}
+
+De levering WH/OUT/00003 werd aangemaakt voor de Espresso Pro X. Bij de levering werd serienummer SN-EPX-2026-002 gebruikt.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case5/9.jpg}
+    \caption{Toewijzing van serienummer SN-EPX-2026-002}
+    \label{fig:poc-s5-serial-assignment}
+\end{figure}
+
+Na validatie kreeg de levering de status Gereed. De machine werd hiermee uit de interne voorraad verplaatst naar de klant.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case5/2.jpg}
+    \caption{Gevalideerde levering WH/OUT/00003 voor RoastLab BV}
+    \label{fig:poc-s5-delivery-done}
+\end{figure}
+
+Het serienummerrecord SN-EPX-2026-002 toont dat het serienummer gekoppeld is aan Espresso Pro X, klant RoastLab BV en locatie Customers. Hierdoor blijft de verkochte machine traceerbaar na levering.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case5/3.jpg}
+    \caption{Serienummerrecord SN-EPX-2026-002 gekoppeld aan RoastLab BV}
+    \label{fig:poc-s5-serial-record}
+\end{figure}
+
+Daarna werd in de Maintenance-module een equipment record aangemaakt: EPX-2026-002. Dit record vormt de basis voor latere onderhoudsopvolging.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case5/4.jpg}
+    \caption{Equipment record EPX-2026-002}
+    \label{fig:poc-s5-equipment}
+\end{figure}
+
+Voor het equipment record werd een preventieve onderhoudsopdracht aangemaakt. Deze werd gepland op 29 mei 2027 en gekoppeld aan EPX-2026-002.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case5/5.jpg}
+    \caption{Preventieve onderhoudsopdracht voor EPX-2026-002}
+    \label{fig:poc-s5-maintenance}
+\end{figure}
+
+De apparatuurkaart toont nadien een smart button naar de gekoppelde onderhoudsopdracht. Dit bevestigt de traceerbaarheid van equipment naar onderhoud.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case5/6.jpg}
+    \caption{Traceerbaarheid van equipment record naar onderhoudsopdracht}
+    \label{fig:poc-s5-equipment-traceability}
+\end{figure}
+
+\subsection{Validatie}
+
+Scenario 5 toont aan dat Odoo serienummertracking en onderhoudsplanning kan combineren. Dit maakt het mogelijk om verkochte machines na levering op te volgen en preventief onderhoud te plannen.
+
+\begin{table}[H]
+    \centering
+    \caption{Validatie van Scenario 5: serienummertracking en maintenance}
+    \label{tab:poc-s5}
+    \begin{tabular}{p{0.44\textwidth}p{0.20\textwidth}p{0.26\textwidth}}
+        \toprule
+        \textbf{Controlepunt} & \textbf{Resultaat} & \textbf{Bewijs} \\
+        \midrule
+        Product met serienummertracking & Geslaagd & Espresso Pro X \\
+        Verkooporder aangemaakt & Geslaagd & S00004 \\
+        Levering gevalideerd & Geslaagd & WH/OUT/00003 \\
+        Serienummer gekoppeld aan klant & Geslaagd & SN-EPX-2026-002 \\
+        Equipment record aangemaakt & Geslaagd & EPX-2026-002 \\
+        Preventief onderhoud gepland & Geslaagd & 29 mei 2027 \\
+        Traceerbaarheid aanwezig & Geslaagd & Smart button Onderhoud 1 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{Scenario 6: Peppol-readiness en e-invoicingcontrole}
+\label{sec:poc-s6}
+
+Het zesde scenario valideert de voorbereiding op Peppol en elektronische facturatie. Dit scenario is rechtstreeks gekoppeld aan de centrale onderzoeksvraag, omdat de migratie naar Odoo niet alleen operationele processen moet verbeteren, maar ook moet bijdragen aan B2B-e-invoicing-readiness.
+
+De PoC test geen productie-uitwisseling via een gecertificeerd Peppol Access Point. De focus ligt op Peppol-readiness: controleren of de noodzakelijke stamdata, btw-gegevens, bankgegevens, factuurvelden en e-invoicingopties aanwezig zijn.
+
+\subsection{Uitvoering}
+
+Eerst werden de bedrijfsgegevens van Hanuman BV gecontroleerd. De bedrijfsfiche bevat een Belgisch adres, btw-nummer, bedrijfs-ID, valuta en contactgegevens.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case6/1.jpg}
+    \caption{Fiscale bedrijfsgegevens van Hanuman BV}
+    \label{fig:poc-s6-company}
+\end{figure}
+
+Vervolgens werd gecontroleerd of de Belgische fiscale lokalisatie en btw-codes aanwezig waren. Odoo bevat Belgische btw-tarieven en varianten voor verkoop en aankoop.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case6/2.jpg}
+    \caption{Belgische btw-codes in Odoo}
+    \label{fig:poc-s6-vat}
+\end{figure}
+
+Daarna werd de klantfiche van Cafe Central BV nagekeken. De fiche bevat een Belgisch adres, btw-nummer en Peppol-gerelateerde informatie. De boekhoudtab geeft aan dat de partner aangesloten is bij Peppol.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case6/3.jpg}
+    \caption{Peppol-gerelateerde gegevens van Cafe Central BV}
+    \label{fig:poc-s6-customer}
+\end{figure}
+
+In de instellingen werd de Peppol-sectie gecontroleerd. De omgeving toont de mogelijkheid om elektronische facturatie via Peppol te activeren. Daarnaast werd in de testomgeving Peppol in demomodus zichtbaar gemaakt.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case6/4.jpg}
+    \caption{Peppol elektronische facturatie in de Odoo-instellingen}
+    \label{fig:poc-s6-peppol-settings}
+\end{figure}
+
+Factuur INV/2026/00001 werd vervolgens gecontroleerd als voorbeeld van een geboekte Belgische klantfactuur. De factuur bevat de klantgegevens, factuurdatum, productlijnen, btw, totaalbedrag en gestructureerde betaalreferentie.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case6/5.jpg}
+    \caption{Geboekte factuur INV/2026/00001 met verplichte factuurgegevens}
+    \label{fig:poc-s6-invoice-fields}
+\end{figure}
+
+Na activatie van Peppol in demomodus werd de verzendwizard gecontroleerd op factuur INV/2026/00003. Deze wizard toont de optie ``met Peppol (Demo)'' en bevat zowel een PDF-factuur als een UBL BIS 3 XML-bijlage. Dit bevestigt dat Odoo de factuur technisch kan voorbereiden voor gestructureerde elektronische facturatie.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case6/6.png}
+    \caption{Verzendwizard met Peppol Demo en UBL BIS 3 XML-bijlage}
+    \label{fig:poc-s6-peppol-wizard}
+\end{figure}
+
+Tot slot werd nogmaals de factuurcontext gecontroleerd. De facturen blijven geboekt en traceerbaar vanuit hun verkooporders, met OGM/betaalreferentie en correcte btw-bedragen.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{../graphics/poc/case6/7.jpg}
+    \caption{Controle van geboekte factuur en betaalstatus}
+    \label{fig:poc-s6-final-invoice}
+\end{figure}
+
+\subsection{Validatie}
+
+Scenario 6 toont aan dat de Odoo-testomgeving voldoende voorbereid is voor Peppol-readiness binnen de grenzen van de PoC. De noodzakelijke stamdata is aanwezig, Belgische btw-codes zijn beschikbaar, klantgegevens bevatten btw- en Peppol-informatie, facturen bevatten de vereiste velden en de verzendwizard toont de Peppol-demo-optie met een UBL BIS 3 XML-bijlage.
+
+\begin{table}[H]
+    \centering
+    \caption{Validatie van Scenario 6: Peppol-readiness}
+    \label{tab:poc-s6}
+    \begin{tabular}{p{0.46\textwidth}p{0.18\textwidth}p{0.26\textwidth}}
+        \toprule
+        \textbf{Controlepunt} & \textbf{Status} & \textbf{Opmerking} \\
+        \midrule
+        Bedrijfs-btw aanwezig & OK & BE0477472701 \\
+        Bedrijfsadres en land aanwezig & OK & België \\
+        IBAN/bankgegevens aanwezig & OK & KBC-testbankrekening \\
+        Belgische fiscale lokalisatie aanwezig & OK & Belgische btw-codes \\
+        Klant-btw aanwezig & OK & Cafe Central BV \\
+        Klantadres en land aanwezig & OK & België \\
+        Peppol EAS/endpoint zichtbaar & OK & Cafe Central BV \\
+        Factuur geboekt & OK & INV/2026/00001 en INV/2026/00003 \\
+        Btw en totaalbedragen aanwezig & OK & 21\% btw \\
+        Peppol Demo zichtbaar & OK & Verzendwizard \\
+        UBL BIS 3 XML-bijlage aanwezig & OK & XML zichtbaar in wizard \\
+        Productie-Peppol getest & Buiten scope & Niet uitgevoerd \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Op basis hiervan kan gesteld worden dat Peppol-readiness binnen de testomgeving succesvol werd aangetoond. De effectieve productie-uitwisseling via een gecertificeerd Access Point werd bewust niet getest.
+
+\section{Samenvattende validatie}
+\label{sec:poc-samenvatting}
+
+De zes scenario's tonen samen aan dat Odoo de belangrijkste TO-BE-processen van Hanuman BV functioneel kan ondersteunen. Tabel~\ref{tab:poc-summary} vat de resultaten samen.
+
+\begin{table}[H]
+    \centering
+    \caption{Samenvatting van de PoC-scenario's}
+    \label{tab:poc-summary}
+    \begin{tabular}{p{0.28\textwidth}p{0.44\textwidth}p{0.18\textwidth}}
+        \toprule
+        \textbf{Scenario} & \textbf{Gevalideerd proces} & \textbf{Status} \\
+        \midrule
+        Sales-to-Cash & Verkooporder, levering, factuur en betaling & Geslaagd \\
+        Purchase + Stock & Inkooporder, ontvangst en voorraadupdate & Geslaagd \\
+        Repair & Herstelling, onderdelenverbruik en facturatie & Geslaagd \\
+        Service + Parts & Dienst en fysieke producten op één factuur & Geslaagd \\
+        Serial + Maintenance & Serienummertracking en preventief onderhoud & Geslaagd \\
+        Peppol-readiness & Stamdata, factuurvelden, Peppol Demo en UBL XML & Geslaagd binnen scope \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+De PoC bevestigt dat Odoo verschillende voorheen verspreide processen kan samenbrengen in één geïntegreerde omgeving. Vooral de koppeling tussen verkoop, voorraad, facturatie, repair en maintenance is relevant voor Hanuman BV.
+
+De belangrijkste gevalideerde verbeteringen zijn:
+
+\begin{itemize}
+    \item verkooporders, leveringen en facturen zijn gekoppeld via smart buttons;
+    \item fysieke producten en diensten worden correct verschillend verwerkt;
+    \item voorraadmutaties worden automatisch geregistreerd na aankoop, verkoop en repair;
+    \item repair orders kunnen gekoppeld worden aan onderdelenverbruik en facturatie;
+    \item serienummers maken after-sales opvolging en onderhoudsplanning mogelijk;
+    \item Peppol-readiness kan gecontroleerd worden op basis van stamdata, factuurvelden en e-invoicinginstellingen.
+\end{itemize}
+
+\section{Beperkingen van de PoC}
+\label{sec:poc-beperkingen}
+
+Hoewel de PoC de functionele haalbaarheid van de voorgestelde Odoo-migratie bevestigt, zijn er enkele beperkingen.
+
+Ten eerste werd gewerkt in een gecontroleerde testomgeving. De resultaten tonen aan dat de processen functioneel uitvoerbaar zijn, maar vervangen geen volledige productie-implementatie met echte gebruikers, historische data, operationele belasting en change management.
+
+Ten tweede werden de resultaten scenario-gebaseerd geëvalueerd. De PoC toont aan dat de processen binnen de gekozen testcases werken, maar meet geen langdurige productiewaarden zoals foutgraad, gemiddelde doorlooptijd over meerdere maanden of gebruikersacceptatie op organisatieniveau.
+
+Ten derde werd Peppol-readiness getest in demomodus. De omgeving toont een Peppol-demo-opzet en een UBL BIS 3 XML-bijlage, maar er werd geen effectieve productie-uitwisseling via een gecertificeerd Peppol Access Point uitgevoerd.
+
+Ten vierde zijn de testklanten, testproducten en testprijzen representatief maar fictief. Ze zijn voldoende om de processen te valideren, maar vormen geen volledige commerciële of boekhoudkundige productieconfiguratie.
+
+Ten slotte werd geen maatwerkontwikkeling toegepast. Dit is tegelijk een beperking en een bewuste keuze. Specifieke optimalisaties op maat van Hanuman BV werden niet getest, maar de reproduceerbaarheid van de PoC blijft hierdoor hoger.
+
+\section{Conclusie van de PoC}
+\label{sec:poc-conclusie}
+
+De Proof of Concept toont aan dat Odoo de kernprocessen van Hanuman BV binnen één geïntegreerde omgeving functioneel kan ondersteunen. De uitgevoerde scenario's bevestigen dat verkoop, aankoop, voorraadbeheer, repair, facturatie, serienummertracking, onderhoud en Peppol-readiness met elkaar verbonden kunnen worden.
+
+Voor de onderzoeksvraag betekent dit dat een gefaseerde migratie naar Odoo technisch en functioneel haalbaar is voor een KMO zoals Hanuman BV. De PoC ondersteunt vooral de stelling dat Odoo dubbele invoer kan verminderen, documenttraceerbaarheid kan verbeteren en voorraadmutaties consistenter kan registreren. Daarnaast toont de Peppol-readinesscontrole aan dat Odoo de nodige basis biedt om B2B-e-invoicing verder voor te bereiden.
+
+De resultaten moeten wel binnen de afgebakende scope gelezen worden. De PoC bewijst geen volledige productie-livegang, maar valideert wel dat de ontworpen TO-BE-processen uitvoerbaar zijn in een realistische Odoo-testomgeving. Daarmee vormt dit hoofdstuk de praktische onderbouwing voor het migratiekader en de aanbevelingen in de volgende hoofdstukken.
