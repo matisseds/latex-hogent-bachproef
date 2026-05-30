@@ -5,44 +5,52 @@
 \chapter{Conclusie}%
 \label{ch:conclusie}
 
-Deze bachelorproef onderzocht hoe een gefaseerde migratie naar een open-source ERP-systeem zoals Odoo servicegerichte Belgische KMO’s kan ondersteunen bij het verbeteren van administratieve processen en het voorbereiden op verplichte elektronische facturatie via Peppol.
+Deze bachelorproef onderzocht hoe een gefaseerde migratie naar een open-source ERP-systeem zoals Odoo servicegerichte Belgische KMO's kan ondersteunen bij het verbeteren van administratieve processen en het voorbereiden op verplichte elektronische facturatie via Peppol.
 
 De centrale onderzoeksvraag luidde als volgt:
 
 \begin{quote}
-Hoe kan een stapsgewijze aanpak voor de migratie naar open-source ERP (Odoo) KMO’s zoals Hanuman BV helpen hun doorlooptijd en foutgraad te verlagen en tegelijk B2B-e-invoicing-compliance (Peppol) te waarborgen?
+Hoe kan een stapsgewijze aanpak voor de migratie naar open-source ERP (Odoo) KMO's zoals Hanuman BV helpen om doorlooptijd, foutgevoeligheid en dubbele gegevensinvoer te verminderen, en tegelijk de voorbereiding op B2B-e-invoicing via Peppol te ondersteunen?
 \end{quote}
 
 Om deze onderzoeksvraag te beantwoorden werd eerst een analyse uitgevoerd van de bestaande werking van Hanuman BV. Daarbij werd vastgesteld dat de onderneming sterk afhankelijk was van Excelbestanden, e-mail en losse administratieve documenten. Deze gefragmenteerde werkwijze leidde tot dubbele gegevensinvoer, beperkte traceerbaarheid, manuele voorraadopvolging en foutgevoelige facturatieprocessen.
 
-Op basis van de AS-IS analyse werden functionele en niet-functionele vereisten opgesteld voor een geïntegreerde ERP-oplossing. Vervolgens werd een TO-BE situatie ontworpen waarin verkoop, voorraadbeheer, serviceprocessen en facturatie centraal beheerd worden binnen Odoo.
+Op basis van de AS-IS-analyse werden functionele en niet-functionele vereisten opgesteld voor een geïntegreerde ERP-oplossing. Vervolgens werd een TO-BE-situatie ontworpen waarin verkoop, aankoop, voorraadbeheer, serviceprocessen, repair, onderhoud en facturatie centraal beheerd worden binnen Odoo.
 
-Daarnaast werd een gefaseerd migratiekader uitgewerkt waarbij de implementatie stapsgewijs verloopt. Deze aanpak beperkt implementatierisico’s en laat toe om processen gecontroleerd te stabiliseren alvorens bijkomende functionaliteiten worden toegevoegd.
+Daarnaast werd een gefaseerd migratiekader uitgewerkt waarbij de implementatie stapsgewijs verloopt. Deze aanpak beperkt implementatierisico's en laat toe om processen gecontroleerd te stabiliseren alvorens bijkomende functionaliteiten worden toegevoegd.
 
-Uit de evaluatie blijkt dat de voorgestelde ERP-omgeving een duidelijke meerwaarde kan bieden voor Hanuman BV. Vooral de centralisatie van stamdata, de automatische koppeling tussen documenten en de integratie van voorraad- en serviceprocessen zorgen voor belangrijke operationele verbeteringen.
+De Proof of Concept valideerde dit migratiekader aan de hand van zes scenario's: een Sales-to-Cash-flow, een aankoop- en voorraadflow, een repair flow, een gecombineerde onderhouds- en onderdelenfactuur, serienummertracking met preventief onderhoud en een Peppol-readinesscontrole. Binnen deze scenario's werd aangetoond dat Odoo de ontworpen TO-BE-processen functioneel kan ondersteunen in een gecontroleerde testomgeving.
 
-Binnen de uitgewerkte scenario’s werd vastgesteld dat:
+Uit de evaluatie blijkt dat de voorgestelde ERP-omgeving een duidelijke meerwaarde kan bieden voor Hanuman BV. Vooral de centralisatie van stamdata, de koppeling tussen documenten en de integratie van voorraad-, service-, repair- en onderhoudsprocessen zorgen voor belangrijke operationele verbeteringen.
+
+Binnen de uitgewerkte scenario's werd vastgesteld dat:
 \begin{itemize}
-    \item het aantal manuele handelingen aanzienlijk vermindert;
+    \item het aantal manuele handelingen indicatief kan verminderen;
     \item documenttraceerbaarheid sterk verbetert;
-    \item voorraadbeheer actueler en consistenter wordt;
-    \item facturatie sneller en minder foutgevoelig verloopt;
-    \item de onderneming technisch beter voorbereid is op Peppol-compliance.
+    \item voorraadbeheer actueler en consistenter wordt bij correcte registratie;
+    \item facturatie sneller en minder foutgevoelig kan verlopen;
+    \item serienummers en equipment records after-sales opvolging ondersteunen;
+    \item de onderneming binnen de testomgeving beter voorbereid is op Peppol-readiness.
 \end{itemize}
+
+De KPI-evaluatie toont aan dat de grootste winst ontstaat in processen waar gegevens in de AS-IS-situatie meerdere keren opnieuw moesten worden ingevoerd of gecontroleerd. De indicatieve vergelijking tussen AS-IS en TO-BE wijst op een mogelijke daling van manuele stappen en doorlooptijd binnen de geselecteerde scenario's. Deze cijfers moeten echter gelezen worden als scenario-gebaseerde indicaties en niet als statistisch bewezen productieresultaten.
+
+De Peppol-readinesscontrole toont aan dat Odoo binnen de testomgeving de nodige basis kan bieden voor gestructureerde elektronische facturatie. De bedrijfsgegevens, klantgegevens, btw-instellingen, bankgegevens en factuurvelden konden centraal worden beheerd. Daarnaast werd in de verzendwizard een Peppol-demo-optie met UBL BIS 3 XML-bijlage zichtbaar. Dit betekent dat de voorbereiding op e-invoicing functioneel werd aangetoond binnen de PoC. Een effectieve productie-uitwisseling via een gecertificeerd Peppol Access Point viel buiten de scope van dit onderzoek.
 
 De evaluatie toont daarnaast aan dat een gefaseerde implementatie bijzonder geschikt is voor kleine ondernemingen met beperkte IT-capaciteit. Door processen stapsgewijs te digitaliseren blijft de implementatie beheersbaar en kunnen gebruikers geleidelijk vertrouwd raken met de nieuwe werkwijze.
 
-Tegelijkertijd bevestigt dit onderzoek dat een ERP-implementatie niet uitsluitend een technische oefening is. Datakwaliteit, centrale stamdata, gebruikersacceptatie en duidelijke processtructuren vormen cruciale voorwaarden voor een succesvolle implementatie.
+Tegelijkertijd bevestigt dit onderzoek dat een ERP-implementatie niet uitsluitend een technische oefening is. Datakwaliteit, centrale stamdata, gebruikersacceptatie, duidelijke processtructuren en consequente registratie vormen cruciale voorwaarden voor een succesvolle implementatie. Zonder correcte klantgegevens, productgegevens, voorraadstanden en facturatiegegevens kan ook een geïntegreerd ERP-systeem foutieve of onvolledige resultaten opleveren.
 
-Hoewel de resultaten van deze bachelorproef positief zijn, kent het onderzoek ook enkele beperkingen. De evaluatie werd uitgevoerd binnen een gecontroleerde Proof of Concept-omgeving en niet binnen een volledige productieomgeving. Daarnaast waren historische logdata en langdurige gebruikersmetingen beperkt beschikbaar, waardoor bepaalde KPI’s indicatief geëvalueerd werden op basis van observaties en scenario-gebaseerde simulaties.
+Hoewel de resultaten van deze bachelorproef positief zijn, kent het onderzoek ook enkele beperkingen. De evaluatie werd uitgevoerd binnen een gecontroleerde Proof of Concept-omgeving en niet binnen een volledige productieomgeving. Daarnaast waren historische logdata en langdurige gebruikersmetingen beperkt beschikbaar, waardoor bepaalde KPI's indicatief geëvalueerd werden op basis van observaties en scenario-gebaseerde simulaties.
 
 Verder onderzoek zou zich kunnen richten op:
 \begin{itemize}
     \item langdurige productievalidatie van de implementatie;
     \item gebruikersacceptatie op langere termijn;
+    \item migratie van historische data;
     \item integratie met externe boekhoud- of betaalsystemen;
     \item geavanceerde rapportering en managementdashboards;
-    \item volledige productie-integratie van Peppol e-invoicing.
+    \item volledige productie-integratie van Peppol e-invoicing via een gecertificeerd Access Point.
 \end{itemize}
 
-Samenvattend kan geconcludeerd worden dat een gefaseerde implementatie van Odoo een haalbare en zinvolle strategie vormt voor servicegerichte Belgische KMO’s zoals Hanuman BV. De combinatie van procesintegratie, centraal databeheer en voorbereiding op elektronische facturatie biedt belangrijke opportuniteiten voor operationele efficiëntie en toekomstige digitale compliance.
+Samenvattend kan geconcludeerd worden dat een gefaseerde implementatie van Odoo een haalbare en zinvolle strategie vormt voor servicegerichte Belgische KMO's zoals Hanuman BV. Binnen de gecontroleerde PoC toont Odoo aan dat verkoop, aankoop, voorraadbeheer, repair, onderhoud, facturatie en Peppol-readiness geïntegreerd ondersteund kunnen worden. De combinatie van procesintegratie, centraal databeheer en voorbereiding op elektronische facturatie biedt belangrijke opportuniteiten voor operationele efficiëntie en verdere digitale maturiteit, op voorwaarde dat de implementatie gefaseerd, zorgvuldig en met voldoende aandacht voor datakwaliteit en gebruikersadoptie wordt uitgevoerd.

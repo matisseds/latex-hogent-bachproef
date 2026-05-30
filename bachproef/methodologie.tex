@@ -114,7 +114,7 @@ Praktische validatie van de ontworpen processen in een testomgeving.
     \item Scenario-gebaseerde functionele tests
 \end{itemize}
 
-De scenario’s omvatten onder meer een sales-to-cash flow, een reparatieflow, een gecombineerde onderhouds- en onderdelenfactuur en een Peppol-readinesscontrole. Op die manier wordt nagegaan of de ontworpen TO-BE processen functioneel uitvoerbaar zijn binnen een gecontroleerde Odoo-omgeving.
+De scenario’s omvatten onder meer een sales-to-cash flow, een aankoop- en voorraadflow, een reparatieflow, een gecombineerde onderhouds- en onderdelenfactuur, serienummertracking met preventief onderhoud en een Peppol-readinesscontrole. Op die manier wordt nagegaan of de ontworpen TO-BE processen functioneel uitvoerbaar zijn binnen een gecontroleerde Odoo-omgeving.
 
 \textbf{Deliverables.}
 \begin{itemize}
@@ -135,13 +135,13 @@ Objectiveren van procesverbetering en beoordelen van voorbereiding op gestructur
     \item Analyse van configuratievereisten voor e-invoicing
 \end{itemize}
 
-De evaluatie focust op het aantal manuele stappen, de doorlooptijd per proces, de mate van traceerbaarheid, het aantal correctiemomenten en de voorbereiding op Peppol-compliance. Omdat historische logdata in de oorspronkelijke situatie beperkt beschikbaar is, worden AS-IS-inschattingen gecombineerd met observaties uit de shadowing en scenario-gebaseerde metingen binnen de PoC-omgeving.
+De evaluatie focust op het aantal manuele stappen, de doorlooptijd per proces, de mate van traceerbaarheid, het aantal correctiemomenten en de voorbereiding op Peppol-readiness. Omdat historische logdata in de oorspronkelijke situatie beperkt beschikbaar is, worden AS-IS-inschattingen gecombineerd met observaties uit de shadowing en scenario-gebaseerde metingen binnen de PoC-omgeving.
 
 \textbf{Deliverables.}
 \begin{itemize}
     \item KPI-evaluatiekader
     \item Vergelijking tussen AS-IS en TO-BE situatie
-    \item Overzicht van aandachtspunten voor Peppol-compliance
+    \item Overzicht van aandachtspunten voor Peppol-readiness
 \end{itemize}
 
 \section{Reproduceerbaarheid van het onderzoek}
@@ -152,9 +152,9 @@ Om de reproduceerbaarheid van het onderzoek te versterken, werden de gebruikte m
 De reproduceerbaarheid steunt op vier elementen.
 
 \begin{itemize}
-    \item \textbf{Afbakening van modules.} De Proof of Concept vertrekt vanuit standaard Odoo-functionaliteiten en gebruikt de modules Contacts, Sales, Invoicing, Inventory, Purchase en Repair.
-    \item \textbf{Representatieve stamdata.} De testomgeving wordt opgebouwd met representatieve klant-, leveranciers-, product- en onderdelengegevens, aangevuld met btw-instellingen en voorbeeldfacturen.
-    \item \textbf{Vaste testscenario’s.} De scenario’s omvatten een verkoopflow van offerte tot factuur, voorraadmutaties, service- en reparatieprocessen en een Peppol-readinesscontrole.
+    \item \textbf{Afbakening van modules.} De Proof of Concept vertrekt vanuit standaard Odoo-functionaliteiten en gebruikt de modules Contacts, Sales, Invoicing, Inventory, Purchase, Repair en Maintenance.
+    \item \textbf{Representatieve stamdata.} De testomgeving wordt opgebouwd met representatieve klant-, leveranciers-, product-, onderdelen- en servicegegevens, aangevuld met btw-instellingen, voorraadgegevens, serienummers, equipment records en voorbeeldfacturen.
+    \item \textbf{Vaste testscenario’s.} De scenario’s omvatten een verkoopflow van offerte tot factuur, aankoop en ontvangst, voorraadmutaties, service- en reparatieprocessen, serienummertracking, onderhoudsplanning en een Peppol-readinesscontrole.
     \item \textbf{Consistente KPI-meting.} De evaluatie gebeurt aan de hand van vaste KPI’s, waaronder het aantal manuele stappen, de doorlooptijd, correctiemomenten, documenttraceerbaarheid, voorraadactualiteit en Peppol-readiness.
 \end{itemize}
 

@@ -9,7 +9,7 @@ Dit hoofdstuk vertaalt de methodologische aanpak uit Hoofdstuk~\ref{ch:methodolo
 
 De analyse vertrekt vanuit een AS-IS-beschrijving van de bestaande processen. Deze beschrijving is gebaseerd op shadowing gedurende één werkdag, informele gesprekken met betrokken stakeholders en analyse van bestaande documenten en werkwijzen. Daarnaast werden bestaande Excelbestanden, offertes, facturen, voorraadlijsten en administratieve documenten geanalyseerd om inzicht te krijgen in de dagelijkse werking van de onderneming.
 
-Op basis daarvan worden de belangrijkste knelpunten geïdentificeerd. Vervolgens worden deze knelpunten vertaald naar functionele vereisten, een afgebakende scope en een TO-BE-ontwerp. Dit TO-BE-ontwerp vormt de basis voor de Proof of Concept die in een latere fase verder wordt uitgewerkt.
+Op basis daarvan worden de belangrijkste knelpunten geïdentificeerd. Vervolgens worden deze knelpunten vertaald naar functionele vereisten, een afgebakende scope en een TO-BE-ontwerp. Dit TO-BE-ontwerp vormt de basis voor de Proof of Concept die in Hoofdstuk~\ref{ch:poc} werd uitgewerkt en gevalideerd.
 
 \section{AS-IS-analyse van Hanuman BV}
 \label{sec:asis-analyse}
@@ -342,6 +342,10 @@ F8 & Stamdata kunnen controleren op btw-nummer, adresgegevens en facturatiegegev
 \hline
 F9 & Documenten en processtappen traceerbaar kunnen opvolgen binnen één systeem & Should-have & Sales / Inventory / Repair \\
 \hline
+F10 & Verkochte toestellen kunnen opvolgen via serienummer en klantkoppeling & Should-have & Inventory / Maintenance \\
+\hline
+F11 & Preventief onderhoud kunnen plannen op basis van een equipment record & Should-have & Maintenance \\
+\hline
 \end{tabular}
 \end{table}
 
@@ -382,6 +386,7 @@ Binnen scope vallen:
     \item verkoopproces van offerte tot factuur;
     \item voorraadbewegingen gekoppeld aan verkoop, aankoop en herstelling;
     \item registratie en facturatie van service- en herstellingsactiviteiten;
+    \item serienummertracking en preventieve onderhoudsplanning;
     \item basisconfiguratie van klanten, producten, leveranciers en btw;
     \item voorbereiding op Peppol-readiness;
     \item documenttraceerbaarheid binnen de geselecteerde processen.
@@ -439,7 +444,7 @@ Daarnaast kunnen minimale voorraadniveaus en waarschuwingen ingesteld worden om 
 
 Voor service en herstellingen moet Odoo toelaten om klant, toestel, uitgevoerde werken en gebruikte onderdelen beter aan elkaar te koppelen. Het doel is niet enkel om een factuur te kunnen maken, maar ook om historiek en traceerbaarheid op te bouwen.
 
-Een herstelling of onderhoudsinterventie kan in de TO-BE-situatie gekoppeld worden aan een klant en eventueel aan een toestel of serienummer. Arbeid en onderdelen kunnen vervolgens op een gestructureerde manier worden verwerkt in de facturatie.
+Een herstelling of onderhoudsinterventie kan in de TO-BE-situatie gekoppeld worden aan een klant en eventueel aan een toestel of serienummer. Daarnaast kan een verkocht toestel als equipment record worden opgevolgd, zodat preventief onderhoud later aan hetzelfde toestel gekoppeld kan worden. Arbeid en onderdelen kunnen vervolgens op een gestructureerde manier worden verwerkt in de facturatie.
 
 Hierdoor wordt beoogd dat het opzoeken van historiek sneller en consistenter verloopt dan in de huidige situatie. Dit vereist wel dat service-interventies consequent als dossier of repair-flow worden geregistreerd en dat gebruikte onderdelen onmiddellijk worden gekoppeld aan de interventie.
 
@@ -451,160 +456,159 @@ Voor Peppol-readiness wordt nagegaan of de configuratie voldoende voorbereid is 
 
 Binnen deze bachelorproef ligt de nadruk op Peppol-readiness en datakwaliteit, niet op een productieklare koppeling met een extern Peppol access point. De effectieve verzending via een productie-access point valt buiten scope, maar de vereiste stamdata en factuurstructuur worden wel geanalyseerd.
 
+
 \subsection{TO-BE-procesmodellen}
 
 Om niet enkel tekstueel maar ook visueel te tonen hoe de gewenste situatie binnen Odoo verloopt, werden de belangrijkste TO-BE-processen eveneens schematisch uitgewerkt. Deze BPMN-achtige procesmodellen maken duidelijk waar Odoo de informatiestroom centraliseert, waar systeemkoppelingen ontstaan en waar manuele overdrachtsmomenten worden beperkt.
 
-De TO-BE-procesmodellen sluiten aan op de eerder besproken AS-IS-processen. Daardoor wordt de overgang tussen de huidige en gewenste situatie niet enkel inhoudelijk, maar ook visueel vergelijkbaar.
+De TO-BE-procesmodellen sluiten aan op de eerder besproken AS-IS-processen en op de uitgevoerde PoC-scenario's. Daardoor wordt de overgang tussen de huidige en gewenste situatie niet enkel inhoudelijk, maar ook visueel vergelijkbaar. Voor elk AS-IS-procesmodel wordt hieronder een overeenkomstig TO-BE-procesmodel voorzien.
 
 \subsubsection{TO-BE verkoop- en facturatieproces}
 
-Het eerste TO-BE-procesmodel toont de geïntegreerde verkoop- en facturatieflow binnen Odoo. In dit proces worden klantgegevens centraal beheerd, wordt een offerte rechtstreeks in Odoo opgemaakt en kan na bevestiging een verkooporder en factuur zonder dubbele gegevensinvoer worden aangemaakt.
+Het eerste TO-BE-procesmodel toont de geïntegreerde verkoop- en facturatieflow binnen Odoo. In dit proces worden klantgegevens centraal beheerd, wordt een offerte rechtstreeks in Odoo opgemaakt en kan na bevestiging een verkooporder, levering en factuur zonder dubbele gegevensinvoer worden aangemaakt. Dit sluit aan bij de Sales-to-Cash-flow en de gemengde onderhouds- en onderdelenfactuur uit de PoC.
 
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[
     node distance=0.9cm,
-    process/.style={rectangle, rounded corners, draw, align=center, text width=5.4cm, minimum height=0.75cm},
-    decision/.style={diamond, draw, align=center, aspect=2, text width=2.8cm, inner sep=1pt},
-    lane/.style={rectangle, draw, align=center, text width=2.8cm, minimum height=0.75cm},
+    process/.style={rectangle, rounded corners, draw, align=center, text width=5.2cm, minimum height=0.75cm},
+    decision/.style={diamond, draw, align=center, aspect=2, text width=2.7cm, inner sep=1pt},
+    lane/.style={rectangle, draw, align=center, text width=2.7cm, minimum height=0.75cm},
     arrow/.style={-{Latex}, thick}
 ]
 
 \node (lane1) [lane] {Klant};
-\node (lane2) [lane, below=2.7cm of lane1] {Hanuman\\administratie};
-\node (lane3) [lane, below=5.9cm of lane1] {Odoo};
-\node (lane4) [lane, below=9.1cm of lane1] {Facturatie /\\Peppol};
+\node (lane2) [lane, below=3.1cm of lane1] {Hanuman\\administratie};
+\node (lane3) [lane, below=5.6cm of lane1] {Odoo};
+\node (lane4) [lane, below=8.1cm of lane1] {Facturatie /\\Peppol-readiness};
 
 \node (vraag) [process, right=1.2cm of lane1] {Klantvraag of bestelling ontvangen};
 
-\node (contact) [process, below=0.8cm of vraag] {Klant selecteren of nieuwe klant aanmaken in centrale stamdata};
-\node (offerte) [process, below=0.8cm of contact] {Offerte opstellen in Odoo op basis van bestaande klant- en productgegevens};
+\node (contact) [process, below=0.8cm of vraag] {Klant selecteren of aanmaken in centrale stamdata};
+\node (offerte) [process, below=0.8cm of contact] {Offerte opstellen in Odoo};
 \node (goedkeur) [decision, below=0.9cm of offerte] {Offerte\\goedgekeurd?};
 
 \node (aanpas) [process, right=1.2cm of goedkeur] {Offerte aanpassen of opvolgen in Odoo};
 \node (so) [process, below=1.0cm of goedkeur] {Offerte omzetten naar verkooporder};
-\node (levering) [process, below=0.8cm of so] {Levering registreren en stock bijwerken};
+\node (levering) [process, below=0.8cm of so] {Levering registreren en voorraad bijwerken};
 \node (factuur) [process, below=0.8cm of levering] {Factuur genereren vanuit verkooporder};
 \node (controle) [process, below=0.8cm of factuur] {Controle van btw, klantgegevens en factuurstructuur};
-\node (verzend) [process, below=0.8cm of controle] {Factuur verzenden via e-mail of voorbereiden voor Peppol};
+\node (verzend) [process, below=0.8cm of controle] {Factuur verzenden of voorbereiden voor e-invoicing};
 
 \draw [arrow] (vraag) -- (contact);
 \draw [arrow] (contact) -- (offerte);
 \draw [arrow] (offerte) -- (goedkeur);
 \draw [arrow] (goedkeur) -- node[above] {Nee} (aanpas);
-\draw [arrow] (goedkeur) -- node[right] {Ja} (so);
 \draw [arrow] (aanpas) |- (offerte);
+\draw [arrow] (goedkeur) -- node[right] {Ja} (so);
 \draw [arrow] (so) -- (levering);
 \draw [arrow] (levering) -- (factuur);
 \draw [arrow] (factuur) -- (controle);
 \draw [arrow] (controle) -- (verzend);
 
-\draw[dashed] (-0.2,-1.55) -- (10.2,-1.55);
-\draw[dashed] (-0.2,-4.85) -- (10.2,-4.85);
-\draw[dashed] (-0.2,-8.10) -- (10.2,-8.10);
+\draw[dashed] (-0.2,-1.75) -- (10.0,-1.75);
+\draw[dashed] (-0.2,-5.35) -- (10.0,-5.35);
+\draw[dashed] (-0.2,-7.85) -- (10.0,-7.85);
 
 \end{tikzpicture}
 \caption{BPMN-achtig TO-BE verkoop- en facturatieproces}
 \label{fig:tobe-verkoop-facturatie}
 \end{figure}
 
-\subsubsection{TO-BE service- en herstelproces}
+\subsubsection{TO-BE service-, herstel- en onderhoudsproces}
 
-Het tweede TO-BE-procesmodel toont hoe service en herstellingen in Odoo meer geïntegreerd verlopen. De historiek van klant en toestel is centraal beschikbaar, gebruikte onderdelen worden geregistreerd en arbeid en materiaal kunnen vanuit hetzelfde dossier in facturatie worden verwerkt.
+Het tweede TO-BE-procesmodel toont hoe service, herstellingen en onderhoud in Odoo meer geïntegreerd verlopen. De historiek van klant en toestel is centraal beschikbaar, gebruikte onderdelen worden geregistreerd, arbeid en materiaal kunnen vanuit hetzelfde dossier in facturatie worden verwerkt en verkochte toestellen kunnen via serienummer en equipment record opgevolgd worden voor preventief onderhoud. Dit sluit aan bij de repair flow en het scenario rond serienummertracking en maintenance uit de PoC.
 
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[
     node distance=0.9cm,
-    process/.style={rectangle, rounded corners, draw, align=center, text width=5.4cm, minimum height=0.75cm},
-    decision/.style={diamond, draw, align=center, aspect=2, text width=2.8cm, inner sep=1pt},
-    lane/.style={rectangle, draw, align=center, text width=2.8cm, minimum height=0.75cm},
+    process/.style={rectangle, rounded corners, draw, align=center, text width=5.2cm, minimum height=0.75cm},
+    decision/.style={diamond, draw, align=center, aspect=2, text width=2.7cm, inner sep=1pt},
+    lane/.style={rectangle, draw, align=center, text width=2.7cm, minimum height=0.75cm},
     arrow/.style={-{Latex}, thick}
 ]
 
 \node (lane1) [lane] {Klant};
-\node (lane2) [lane, below=2.5cm of lane1] {Technieker /\\service};
+\node (lane2) [lane, below=2.7cm of lane1] {Technieker /\\service};
 \node (lane3) [lane, below=5.6cm of lane1] {Odoo};
-\node (lane4) [lane, below=9.0cm of lane1] {Voorraad /\\facturatie};
+\node (lane4) [lane, below=8.3cm of lane1] {Voorraad /\\facturatie /\\maintenance};
 
-\node (melding) [process, right=1.2cm of lane1] {Serviceaanvraag of storing melden};
+\node (melding) [process, right=1.2cm of lane1] {Serviceaanvraag, storing of onderhoudsvraag melden};
 
-\node (dossier) [process, below=0.8cm of melding] {Klant- en toestelhistoriek openen in Odoo};
-\node (diagnose) [process, below=0.8cm of dossier] {Diagnose uitvoeren en interventie registreren};
+\node (historiek) [process, below=0.8cm of melding] {Klant-, toestel- en serienummerhistoriek openen in Odoo};
+\node (diagnose) [process, below=0.8cm of historiek] {Diagnose uitvoeren en interventie of repair registreren};
 \node (onderdelen) [decision, below=0.9cm of diagnose] {Onderdelen\\nodig?};
 
-\node (arbeid) [process, right=1.2cm of onderdelen] {Arbeid registreren zonder materiaalverbruik};
-\node (gebruik) [process, below=1.0cm of onderdelen] {Onderdelen selecteren en registreren op de interventie};
+\node (arbeid) [process, right=1.2cm of onderdelen] {Arbeid of onderhoud registreren zonder materiaalverbruik};
+\node (gebruik) [process, below=1.0cm of onderdelen] {Onderdelen registreren op interventie};
 \node (stock) [process, below=0.8cm of gebruik] {Voorraad verminderen via Odoo};
-\node (afrond) [process, below=0.8cm of stock] {Interventie afronden met historiek, arbeid en onderdelen};
-\node (factuur) [process, below=0.8cm of afrond] {Factuur genereren vanuit service- of repairdossier};
-\node (check) [process, below=0.8cm of factuur] {Controle en verzending van de factuur};
+\node (facturatie) [process, below=0.8cm of stock] {Factuur genereren vanuit service- of repairdossier};
+\node (maintenance) [process, below=0.8cm of facturatie] {Equipment record of onderhoudsplanning bijwerken};
 
-\draw [arrow] (melding) -- (dossier);
-\draw [arrow] (dossier) -- (diagnose);
+\draw [arrow] (melding) -- (historiek);
+\draw [arrow] (historiek) -- (diagnose);
 \draw [arrow] (diagnose) -- (onderdelen);
 \draw [arrow] (onderdelen) -- node[above] {Nee} (arbeid);
-\draw [arrow] (arbeid) |- (factuur);
+\draw [arrow] (arbeid) |- (facturatie);
 \draw [arrow] (onderdelen) -- node[right] {Ja} (gebruik);
 \draw [arrow] (gebruik) -- (stock);
-\draw [arrow] (stock) -- (afrond);
-\draw [arrow] (afrond) -- (factuur);
-\draw [arrow] (factuur) -- (check);
+\draw [arrow] (stock) -- (facturatie);
+\draw [arrow] (facturatie) -- (maintenance);
 
-\draw[dashed] (-0.2,-1.45) -- (10.2,-1.45);
-\draw[dashed] (-0.2,-4.65) -- (10.2,-4.65);
-\draw[dashed] (-0.2,-8.00) -- (10.2,-8.00);
+\draw[dashed] (-0.2,-1.55) -- (10.0,-1.55);
+\draw[dashed] (-0.2,-4.70) -- (10.0,-4.70);
+\draw[dashed] (-0.2,-7.20) -- (10.0,-7.20);
 
 \end{tikzpicture}
-\caption{BPMN-achtig TO-BE service- en herstelproces}
+\caption{BPMN-achtig TO-BE service-, herstel- en onderhoudsproces}
 \label{fig:tobe-service-herstelling}
 \end{figure}
 
 \subsubsection{TO-BE voorraadproces}
 
-Het derde TO-BE-procesmodel toont hoe voorraadmutaties in de gewenste situatie rechtstreeks gekoppeld worden aan verkoop, aankoop en herstellingen. Hierdoor ontstaat een actueler voorraadbeeld en kan sneller gereageerd worden op lage stockniveaus.
+Het derde TO-BE-procesmodel toont hoe voorraadmutaties in de gewenste situatie gekoppeld worden aan verkoop, aankoop en herstellingen. Hierdoor ontstaat een actueler voorraadbeeld dan in de AS-IS-situatie. In de PoC werd dit gevalideerd via een aankoopontvangst, een verkoopuitlevering en onderdelenverbruik binnen een repair flow.
 
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[
     node distance=0.9cm,
-    process/.style={rectangle, rounded corners, draw, align=center, text width=5.4cm, minimum height=0.75cm},
-    decision/.style={diamond, draw, align=center, aspect=2, text width=2.8cm, inner sep=1pt},
-    lane/.style={rectangle, draw, align=center, text width=2.8cm, minimum height=0.75cm},
+    process/.style={rectangle, rounded corners, draw, align=center, text width=5.2cm, minimum height=0.75cm},
+    decision/.style={diamond, draw, align=center, aspect=2, text width=2.7cm, inner sep=1pt},
+    lane/.style={rectangle, draw, align=center, text width=2.7cm, minimum height=0.75cm},
     arrow/.style={-{Latex}, thick}
 ]
 
-\node (lane1) [lane] {Verkoop /\\service};
-\node (lane2) [lane, below=2.8cm of lane1] {Odoo};
-\node (lane3) [lane, below=6.0cm of lane1] {Voorraadbeheer /\\aankoop};
+\node (lane1) [lane] {Verkoop /\\service /\\aankoop};
+\node (lane2) [lane, below=3.1cm of lane1] {Odoo};
+\node (lane3) [lane, below=5.9cm of lane1] {Voorraad-\\beheer};
 
-\node (trans) [process, right=1.2cm of lane1] {Verkoop of herstelling veroorzaakt materiaalverbruik};
-\node (reg) [process, below=0.8cm of trans] {Transactie registreren in verkooporder, levering of repairdossier};
-\node (mut) [process, below=0.8cm of reg] {Odoo verwerkt stockmutatie op basis van registratie};
+\node (trans) [process, right=1.2cm of lane1] {Verkoop, aankoop of herstelling veroorzaakt voorraadbeweging};
+\node (reg) [process, below=0.8cm of trans] {Transactie registreren in verkooporder, ontvangst of repairdossier};
+\node (validatie) [process, below=0.8cm of reg] {Levering, ontvangst of repairflow valideren};
+\node (mut) [process, below=0.8cm of validatie] {Odoo verwerkt stockmutatie};
 \node (actueel) [process, below=0.8cm of mut] {Actueler voorraadniveau zichtbaar};
-\node (laag) [decision, below=0.9cm of actueel] {Voorraad onder\\minimum?};
+\node (laag) [decision, below=0.9cm of actueel] {Voorraad\\onvoldoende?};
 \node (ok) [process, right=1.2cm of laag] {Geen bijkomende actie nodig};
-\node (waarschuwing) [process, below=1.0cm of laag] {Waarschuwing of bestelvoorstel genereren};
-\node (aankoop) [process, below=0.8cm of waarschuwing] {Aankoop of aanvulling plannen op basis van actuele stock};
+\node (aankoop) [process, below=1.0cm of laag] {Aankooporder of aanvulling plannen};
 
 \draw [arrow] (trans) -- (reg);
-\draw [arrow] (reg) -- (mut);
+\draw [arrow] (reg) -- (validatie);
+\draw [arrow] (validatie) -- (mut);
 \draw [arrow] (mut) -- (actueel);
 \draw [arrow] (actueel) -- (laag);
 \draw [arrow] (laag) -- node[above] {Nee} (ok);
-\draw [arrow] (laag) -- node[right] {Ja} (waarschuwing);
-\draw [arrow] (waarschuwing) -- (aankoop);
+\draw [arrow] (laag) -- node[right] {Ja} (aankoop);
 
-\draw[dashed] (-0.2,-1.65) -- (10.2,-1.65);
-\draw[dashed] (-0.2,-4.95) -- (10.2,-4.95);
+\draw[dashed] (-0.2,-1.85) -- (10.0,-1.85);
+\draw[dashed] (-0.2,-5.10) -- (10.0,-5.10);
 
 \end{tikzpicture}
-\caption{BPMN-achtig TO-BE voorraadproces bij verkoop of herstelling}
+\caption{BPMN-achtig TO-BE voorraadproces bij verkoop, aankoop of herstelling}
 \label{fig:tobe-voorraad}
 \end{figure}
 
-De drie TO-BE-procesmodellen tonen dat Odoo fungeert als centrale schakel tussen verkoop, service, voorraad en facturatie. Informatie hoeft minder manueel tussen documenten te worden overgenomen, voorraadmutaties worden gekoppeld aan geregistreerde transacties en de documenttraceerbaarheid neemt toe. Daardoor wordt duidelijk hoe de beoogde KPI-verbeteringen inhoudelijk tot stand kunnen komen.
+De drie TO-BE-procesmodellen tonen dat Odoo fungeert als centrale schakel tussen verkoop, aankoop, service, voorraad, facturatie en onderhoud. Informatie hoeft minder manueel tussen documenten te worden overgenomen, voorraadmutaties worden gekoppeld aan geregistreerde transacties en de documenttraceerbaarheid neemt toe. Daarnaast wordt de after-sales opvolging versterkt door serienummertracking, equipment records en preventieve onderhoudsplanning. Daardoor wordt duidelijk hoe de beoogde KPI-verbeteringen inhoudelijk tot stand kunnen komen.
 
 Tabel~\ref{tab:asis-tobe-overzicht} vat de belangrijkste verschillen tussen de huidige situatie en de ontworpen TO-BE-situatie samen.
 
@@ -653,7 +657,7 @@ Een gefaseerde aanpak beperkt operationele risico’s en laat toe om processen s
 \hline
 2 & Inventory & Actueler voorraadbeheer en stockmutaties & Verschil tussen administratieve en werkelijke voorraad & Starttelling en duidelijke registratieafspraken & Actuele stocklijst en basisvoorraadflow \\
 \hline
-3 & Service en herstellingen & Centrale opvolging van interventies en onderdelen & Onvolledige registratie van arbeid of onderdelen & Werkinstructie voor serviceflow en onderdelenregistratie & Traceerbaar service- of repairdossier \\
+3 & Service, herstellingen en onderhoud & Centrale opvolging van interventies, onderdelen, serienummers en onderhoud & Onvolledige registratie van arbeid, onderdelen of toestellen & Werkinstructie voor serviceflow, onderdelenregistratie en equipmentopvolging & Traceerbaar service-, repair- of onderhoudsdossier \\
 \hline
 4 & Peppol en e-invoicing & Voorbereiding op elektronische facturatie & Validatiefouten door ontbrekende stamdata of foutieve configuratie & Controle van btw-nummers, adressen, bankgegevens en factuurvelden & Peppol-readinesscontrole en configuratiecheck \\
 \hline
@@ -692,19 +696,22 @@ De focus ligt op:
 
 Een correcte startvoorraad is hierbij belangrijk. Indien de initiële voorraadstand niet overeenkomt met de werkelijke voorraad, zal ook het ERP-systeem foutieve voorraadniveaus tonen.
 
-\subsection{Fase 3: Service en herstellingen}
+\subsection{Fase 3: Service, herstellingen en onderhoud}
 
-De derde fase richt zich op service- en herstelprocessen.
+De derde fase richt zich op service-, herstel- en onderhoudsprocessen.
 
 Binnen deze fase worden:
 \begin{itemize}
     \item klant- en toestelhistoriek;
+    \item serienummertracking;
+    \item equipment records;
+    \item preventieve onderhoudsplanning;
     \item onderdelenverbruik;
     \item arbeidsregistratie;
     \item servicefacturatie
 \end{itemize}
 
-gestructureerd geïntegreerd binnen dezelfde ERP-omgeving. Deze fase vereist duidelijke afspraken rond registratie, zodat technici of administratieve medewerkers onderdelen en arbeid consequent koppelen aan het juiste dossier.
+gestructureerd geïntegreerd binnen dezelfde ERP-omgeving. Deze fase vereist duidelijke afspraken rond registratie, zodat technici of administratieve medewerkers onderdelen, arbeid en toestelinformatie consequent koppelen aan het juiste dossier.
 
 \subsection{Fase 4: E-invoicing en Peppol-readiness}
 
@@ -733,12 +740,14 @@ De PoC wordt opgevat als een functionele validatie van het migratiekader en niet
 Als voorbereiding op de PoC werden de volgende testelementen afgebakend:
 
 \begin{itemize}
-    \item 25 representatieve klanten;
-    \item 12 leveranciers;
-    \item 48 producten en onderdelen;
+    \item representatieve klanten, waaronder Cafe Central BV, Hotel Aroma BV, OfficeBeans NV en RoastLab BV;
+    \item representatieve leveranciers, waaronder BrewParts Europe;
+    \item fysieke producten, onderdelen en diensten;
+    \item initiële voorraadgegevens;
+    \item serienummers en equipment records;
     \item standaard btw-configuraties;
     \item voorbeeldfacturen;
-    \item testscenario’s voor verkoop, voorraad en service.
+    \item testscenario’s voor verkoop, aankoop, voorraad, repair, onderhoud en Peppol-readiness.
 \end{itemize}
 
 Deze elementen vormen de voorziene testdataset voor de PoC. Ze dienen om de ontworpen TO-BE-processen scenario-gebaseerd te kunnen testen en om de KPI-evaluatie in Hoofdstuk~\ref{ch:evaluatie} te ondersteunen.
@@ -748,7 +757,7 @@ De verdere uitwerking van de Proof of Concept omvat onder meer:
 \begin{itemize}
     \item configuratie van relevante Odoo-modules;
     \item invoer van stamdata;
-    \item uitvoering van verkoop-, voorraad- en servicescenario’s;
+    \item uitvoering van verkoop-, aankoop-, voorraad-, repair-, onderhouds- en Peppol-readinessscenario’s;
     \item controle van documenttraceerbaarheid;
     \item evaluatie van Peppol-readiness;
     \item voorbereiding van KPI-evaluatie.
@@ -764,17 +773,21 @@ Tabel~\ref{tab:odoo-modules} toont de koppeling tussen de geselecteerde bedrijfs
 \hline
 \textbf{Bedrijfsproces} & \textbf{Odoo-module} \\
 \hline
+Klant- en leveranciersbeheer & Contacts \\
+\hline
 Verkoop en offertes & Sales \\
 \hline
-Facturatie & Invoicing \\
+Facturatie en e-invoicingvoorbereiding & Invoicing / Accounting \\
 \hline
-Voorraadbeheer & Inventory \\
+Voorraadbeheer en leveringen & Inventory \\
 \hline
-Leveranciersbeheer & Purchase \\
-\hline
-Klantbeheer & Contacts \\
+Aankoop en ontvangsten & Purchase \\
 \hline
 Service en herstellingen & Repair \\
+\hline
+Serienummertracking en preventief onderhoud & Inventory / Maintenance \\
+\hline
+Peppol-readiness & Accounting / Invoicing \\
 \hline
 \end{tabular}
 \end{table}
